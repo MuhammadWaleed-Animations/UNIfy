@@ -1,4 +1,4 @@
-package com.mwafaimk.unify.ui.features.test.viewmodel
+package com.mwafaimk.unify.ui.pages.test.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

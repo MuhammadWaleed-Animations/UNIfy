@@ -1,4 +1,4 @@
-package com.mwafaimk.unify.ui.features.test
+package com.mwafaimk.unify.ui.pages.test
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.mwafaimk.unify.ui.features.test.viewmodel.SignInViewModel
+import com.mwafaimk.unify.ui.pages.test.viewmodel.SignInViewModel
 import kotlinx.coroutines.launch
 
 

@@ -9,7 +9,7 @@ data class User(
     @SerialName("email") val email: String,
     @SerialName("password") val password: String,
     @SerialName("contactInfo") val contactInfo: String?,
-    @SerialName("pfp") val pfp: String?,
+    @SerialName("profilePicture") val profilePicture: String?,
     @SerialName("organization") val organization: String?,
 )
 
