@@ -1,10 +1,9 @@
-package com.mwafaimk.unify.data.model.blockedUser
+package com.mwafaimk.unify.data.model.admin
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RemoveBlockedUserRequest(
-    @SerialName("email") val email: String,
+data class AdminDetails(
     @SerialName("userId") val userId: String
 )
