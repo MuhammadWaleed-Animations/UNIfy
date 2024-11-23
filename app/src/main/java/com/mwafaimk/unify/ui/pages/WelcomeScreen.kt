@@ -1,4 +1,4 @@
-package com.mwafaimk.unify.ui.pages.user
+package com.mwafaimk.unify.ui.pages
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
