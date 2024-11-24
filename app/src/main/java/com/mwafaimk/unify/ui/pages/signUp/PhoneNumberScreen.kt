@@ -1,4 +1,4 @@
-package com.mwafaimk.unify.ui.pages
+package com.mwafaimk.unify.ui.pages.signUp
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,21 +24,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.mwafaimk.unify.ui.components.Logo
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UniqueIdentityScreen(onNext: (String) -> Unit) {
-    var identity by remember { mutableStateOf("") }
-    val isButtonEnabled = identity.isNotBlank() // Enable button if input is not empty
+fun PhoneNumberScreen(onNext: (String) -> Unit) {
+    var phoneNumber by remember { mutableStateOf("") }
+    val isButtonEnabled = phoneNumber.isNotEmpty() // Enable button when text field is not empty
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black)
             .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally // Central alignment for all components
+        horizontalAlignment = Alignment.CenterHorizontally // Align all elements centrally
     ) {
         // Centrally aligned logo
         Logo()
@@ -47,24 +49,25 @@ fun UniqueIdentityScreen(onNext: (String) -> Unit) {
 
         // Text aligned to the left above the text field
         Text(
-            text = "Choose your UNIque Identity",
+            text = "Share Number if its Comfy",
             color = Color.Cyan,
             modifier = Modifier
                 .padding(bottom = 8.dp)
-                .fillMaxWidth() // Ensure full width
+                .fillMaxWidth() // Ensure it spans the full width
                 .align(Alignment.Start) // Align text to the left
         )
 
-        // TextField for entering unique identity
+        // TextField for phone number input
         TextField(
-            value = identity,
-            onValueChange = { identity = it },
-            label = { Text("Enter Identity", color = Color.Gray) },
+            value = phoneNumber,
+            onValueChange = { phoneNumber = it },
+            label = { Text("Phone Number", color = Color.Gray) },
             modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
             colors = TextFieldDefaults.textFieldColors(
-                containerColor = Color.LightGray, // TextField background color
-                focusedLabelColor = Color.Cyan, // Label color when focused
-                unfocusedLabelColor = Color.Gray // Label color when unfocused
+                containerColor = Color.LightGray,
+                focusedLabelColor = Color.Cyan,
+                unfocusedLabelColor = Color.Cyan
             )
         )
 
@@ -76,13 +79,13 @@ fun UniqueIdentityScreen(onNext: (String) -> Unit) {
             horizontalArrangement = Arrangement.End // Align button to the right
         ) {
             Button(
-                onClick = { if (isButtonEnabled) onNext(identity) },
+                onClick = { if (isButtonEnabled) onNext(phoneNumber) },
                 enabled = isButtonEnabled,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = if (isButtonEnabled) Color.Black else Color.Gray
                 )
             ) {
-                Text("Go to Next Mission", color = if (isButtonEnabled) Color.Green else Color.DarkGray)
+                Text("Go To Next Mission", color = if (isButtonEnabled) Color.Green else Color.DarkGray)
             }
         }
     }

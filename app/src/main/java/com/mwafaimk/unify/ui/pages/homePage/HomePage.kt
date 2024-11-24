@@ -1,9 +1,8 @@
-package com.mwafaimk.unify.ui.pages
+package com.mwafaimk.unify.ui.pages.homePage
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.R
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,12 +24,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mwafaimk.unify.R
 import com.mwafaimk.unify.ui.components.PostCard
 import com.mwafaimk.unify.ui.components.PostData
 
 
 @Composable
-fun PostPage() {
+fun HomePage() {
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
             // Profile Section

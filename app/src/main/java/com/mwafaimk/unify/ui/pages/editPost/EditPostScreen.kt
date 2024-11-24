@@ -1,4 +1,4 @@
-package com.mwafaimk.unify.ui.pages
+package com.mwafaimk.unify.ui.pages.editPost
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

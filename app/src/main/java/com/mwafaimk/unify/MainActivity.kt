@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import dagger.hilt.android.AndroidEntryPoint
 
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.mwafaimk.unify.ui.pages.homePage.HomePage
 import com.mwafaimk.unify.ui.pages.test.ApiTestScreen
 import com.mwafaimk.unify.ui.pages.test.viewmodel.ApiTestViewModel
 
@@ -18,7 +19,8 @@ class MainActivity : ComponentActivity() {
 //            SignInScreen(viewModel = signInViewModel)
 
             val apiTestViewModel = viewModel<ApiTestViewModel>()
-            ApiTestScreen(viewModel = apiTestViewModel)
+            //ApiTestScreen(viewModel = apiTestViewModel)
+            HomePage()
         }
     }
 }
