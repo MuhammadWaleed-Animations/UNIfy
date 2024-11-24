@@ -23,8 +23,8 @@ fun ApiTestScreen(viewModel: ApiTestViewModel) {
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Button(onClick = { viewModel.createUser() }) { Text("Create User") }
-            Button(onClick = { viewModel.loginUser() }) { Text("Login User") }
+            Button(onClick = { viewModel.testApi1() }) { Text("Test Api 1") }
+            Button(onClick = { viewModel.testApi2() }) { Text("Test Api 2") }
 
             Divider()
 

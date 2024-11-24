@@ -8,7 +8,15 @@ import com.mwafaimk.unify.data.model.blockedUser.GetAllBlockedUsersResponse
 import com.mwafaimk.unify.data.model.blockedUser.RemoveBlockedUserRequest
 import com.mwafaimk.unify.data.model.blockedUser.RemoveBlockedUserResponse
 import com.mwafaimk.unify.data.model.post.PostDetails
+import com.mwafaimk.unify.data.model.post.createPost.CreatePostRequest
+import com.mwafaimk.unify.data.model.post.createPost.CreatePostResponse
+import com.mwafaimk.unify.data.model.post.delete.DeletePostResponse
+import com.mwafaimk.unify.data.model.post.done.ToggleDoneRequest
+import com.mwafaimk.unify.data.model.post.done.ToggleDoneResponse
 import com.mwafaimk.unify.data.model.post.postReport.ReportPostResponse
+import com.mwafaimk.unify.data.model.post.updatePost.UpdatePostDetails
+import com.mwafaimk.unify.data.model.post.updatePost.UpdatePostRequest
+import com.mwafaimk.unify.data.model.post.updatePost.UpdatePostResponse
 import com.mwafaimk.unify.data.model.user.User
 import com.mwafaimk.unify.data.model.user.createUser.CreateUserRequest
 import com.mwafaimk.unify.data.model.user.createUser.CreateUserResponse
@@ -26,6 +34,7 @@ class NetworkRepositoryImpl @Inject constructor(
 //    private val authStateManager: AuthStateManager
 ): NetworkRepository {
 
+    //User Api
     override suspend fun createUser(request: CreateUserRequest): CreateUserResponse {
         return apiService.createUser(request)
     }
@@ -47,15 +56,54 @@ class NetworkRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun getAllPosts(): List<PostDetails> {
-        return apiService.getAllPosts()
-    }
 
+
+
+
+
+    //POST API
+    override suspend fun getAllPosts(organization: String): List<PostDetails> {
+        return apiService.getAllPosts(organization)
+    }
     override suspend fun reportPost(postId: String): ReportPostResponse {
         return apiService.reportPost(postId)
     }
+    override suspend fun togglePostDone(postId: String, request: ToggleDoneRequest): ToggleDoneResponse {
+        return apiService.togglePostDone(postId,request)
+    }
+    override suspend fun deleteUserPosts(userId: String): DeletePostResponse {
+        return apiService.deleteUserPosts(userId)
+    }
+    override suspend fun deletePost(postId: String): DeletePostResponse {
+        return apiService.deletePost(postId)
+    }
+    override suspend fun updatePost( postId: String, updates: UpdatePostRequest): UpdatePostResponse {
+        return apiService.updatePost(postId,updates)
+    }
+    override suspend fun createPost(request: CreatePostRequest): CreatePostResponse {
+        return apiService.createPost(request)
+    }
+    override suspend fun deleteAllPosts(): DeletePostResponse {
+        return apiService.deleteAllPosts()
+    }
+    override suspend fun getPostsByCategory(category: String,organization: String): List<PostDetails> {
+        return apiService.getPostsByCategory(category, organization)
+    }
+    override suspend fun getUserPosts(userId: String): List<UpdatePostDetails> {
+        return apiService.getUserPosts(userId)
+    }
+    override suspend fun getReportedPosts(request: AdminDetails): List<PostDetails> {
+        return apiService.getReportedPosts(request)
+    }
+    override suspend fun unReportPost(postId: String, request: AdminDetails): ReportPostResponse {
+        return apiService.unReportPost(postId,request)
+    }
 
 
+
+
+
+    //blockedUser
     override suspend fun blockUser(request: BlockUserRequest): BlockUserResponse {
         return apiService.addBlockedUser(request)
     }

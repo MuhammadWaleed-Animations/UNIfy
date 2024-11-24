@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PostReportStatus(
-    @SerialName("_id") val id: String,
+    @SerialName("_id") val _id: String,
     @SerialName("reported") val reported: Boolean,
 )
