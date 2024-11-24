@@ -60,33 +60,6 @@ fun PostCard(postData: PostData) {
 
 
 
-@Composable
-fun AdditionalInfo(postData: PostData) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = postData.eventTime,
-            fontSize = 13.sp,
-            color = Color.Black,
-        )
-        Spacer(modifier = Modifier.weight(1f))
-        Text(
-            text = postData.additionalInfo,
-            fontSize = 13.sp,
-            color = Color.Black
-        )
-        Spacer(modifier = Modifier.width(20.dp))
-        Icon(
-            painter = painterResource(id = R.drawable.attached),
-            contentDescription = "Refresh Icon",
-            tint = Color.Black,
-            modifier = Modifier.size(16.dp)
-        )
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
