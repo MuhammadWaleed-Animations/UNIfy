@@ -87,22 +87,6 @@ fun ProfileSection(postData: PostData) {
 }
 
 @Composable
-fun EventDetails(postData: PostData) {
-    Text(
-        text = postData.eventTitle,
-        fontWeight = FontWeight.Bold,
-        fontSize = 14.sp,
-        color = Color.Black
-    )
-    Spacer(modifier = Modifier.height(4.dp))
-    Text(
-        text = postData.eventDescription,
-        fontSize = 13.sp,
-        color = Color.Black
-    )
-}
-
-@Composable
 fun AdditionalInfo(postData: PostData) {
     Row(
         modifier = Modifier.fillMaxWidth(),
