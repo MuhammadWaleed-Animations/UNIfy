@@ -61,32 +61,6 @@ fun PostCard(postData: PostData) {
 
 
 @Composable
-fun ProfileSection(postData: PostData) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Image(
-            painter = painterResource(id = postData.profileImage),
-            contentDescription = "Profile Image",
-            modifier = Modifier
-                .size(40.dp)
-                .padding(end = 8.dp)
-        )
-        Column {
-            Text(
-                text = postData.userName,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                color = Color.Black
-            )
-            Text(
-                text = postData.userEmail,
-                color = Color.DarkGray,
-                fontSize = 12.sp
-            )
-        }
-    }
-}
-
-@Composable
 fun AdditionalInfo(postData: PostData) {
     Row(
         modifier = Modifier.fillMaxWidth(),
