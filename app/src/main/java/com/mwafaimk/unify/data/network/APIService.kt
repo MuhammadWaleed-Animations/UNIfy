@@ -13,6 +13,9 @@ import com.mwafaimk.unify.data.model.post.delete.DeletePostResponse
 import com.mwafaimk.unify.data.model.post.done.ToggleDoneRequest
 import com.mwafaimk.unify.data.model.post.done.ToggleDoneResponse
 import com.mwafaimk.unify.data.model.post.postReport.ReportPostResponse
+import com.mwafaimk.unify.data.model.post.updatePost.UpdatePostDetails
+import com.mwafaimk.unify.data.model.post.updatePost.UpdatePostRequest
+import com.mwafaimk.unify.data.model.post.updatePost.UpdatePostResponse
 import com.mwafaimk.unify.data.model.user.createUser.CreateUserRequest
 import com.mwafaimk.unify.data.model.user.createUser.CreateUserResponse
 import com.mwafaimk.unify.data.model.user.deleteUser.DeleteUserResponse
@@ -55,51 +58,49 @@ interface ApiService {
 
 
     // Post APIs
-    @POST("/posts")
-    suspend fun createPost(@Body request: CreatePostRequest): CreatePostResponse
-
     @GET("/posts/all")
-    suspend fun getAllPosts(@Query("organization") organization: String? = null): List<PostDetails>
-
+    suspend fun getAllPosts(@Query("organization") organization: String): List<PostDetails>
     @PUT("/posts/{postId}/report")
     suspend fun reportPost(@Path("postId") postId: String): ReportPostResponse
-
     @PUT("/posts/{postId}/done")
-    suspend fun togglePostDone(
-        @Path("postId") postId: String,
-        @Body request: ToggleDoneRequest
-    ): ToggleDoneResponse
-
-    @GET("/posts/user/{userId}")
-    suspend fun getUserPosts(@Path("userId") userId: String): List<PostDetails>
-
-    @DELETE("/posts/{postId}")
-    suspend fun deletePost(@Path("postId") postId: String): DeletePostResponse
-
+    suspend fun togglePostDone( @Path("postId") postId: String, @Body request: ToggleDoneRequest): ToggleDoneResponse
     @DELETE("/posts/user/{userId}")
     suspend fun deleteUserPosts(@Path("userId") userId: String): DeletePostResponse
+    @DELETE("/posts/{postId}")
+    suspend fun deletePost(@Path("postId") postId: String): DeletePostResponse
     @PUT("/posts/{postId}")
-    suspend fun updatePost(
-        @Path("postId") postId: String,
-        @Body updates: CreatePostRequest
-    ): CreatePostResponse
-
+    suspend fun updatePost(@Path("postId") postId: String, @Body updates: UpdatePostRequest): UpdatePostResponse  ////////////make it work //don't worry past me i got ya. I resolved the bug :D
+    @POST("/posts")
+    suspend fun createPost(@Body request: CreatePostRequest): CreatePostResponse
     @DELETE("/posts")
     suspend fun deleteAllPosts(): DeletePostResponse
     @GET("/posts/category")
-    suspend fun getPostsByCategory(@Query("category") category: String): List<PostDetails>
-
-
-    @GET("/posts/reported")
-    suspend fun getReportedPosts(
-        @Header("Authorization") token: String
-    ): List<PostDetails>
-
+    suspend fun getPostsByCategory(@Query("category") category: String,@Query("organization") organization: String): List<PostDetails>
+    @GET("/posts/user/{userId}")
+    suspend fun getUserPosts(@Path("userId") userId: String): List<UpdatePostDetails>
+    @POST("/posts/reported")
+    suspend fun getReportedPosts(@Body request: AdminDetails): List<PostDetails>
     @PUT("/posts/{postId}/unreport")
-    suspend fun unreportPost(
-        @Path("postId") postId: String,
-        @Header("Authorization") token: String
-    ): ReportPostResponse
+    suspend fun unReportPost(@Path("postId") postId: String, @Body request: AdminDetails): ReportPostResponse
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

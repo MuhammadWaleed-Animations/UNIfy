@@ -8,6 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.mwafaimk.unify.data.model.admin.AdminDetails
 import com.mwafaimk.unify.data.model.blockedUser.BlockUserRequest
 import com.mwafaimk.unify.data.model.blockedUser.RemoveBlockedUserRequest
+import com.mwafaimk.unify.data.model.post.createPost.CreatePostRequest
+import com.mwafaimk.unify.data.model.post.done.ToggleDoneRequest
+import com.mwafaimk.unify.data.model.post.updatePost.UpdatePostRequest
 import com.mwafaimk.unify.data.model.user.createUser.CreateUserRequest
 import com.mwafaimk.unify.data.model.user.login.LoginRequest
 import com.mwafaimk.unify.data.model.user.updateUser.UpdateUserRequest
@@ -23,11 +26,13 @@ class ApiTestViewModel @Inject constructor(
 
     val responseLiveData = MutableLiveData<String>()
 
-    fun createUser() {
+    fun testApi1() {
         viewModelScope.launch {
             try {
                 //val response = repository.createUser(CreateUserRequest("mw1", "mw1@mw.com", "mw","mw","mw","mw"))
-                val response = repository.createUser(CreateUserRequest("Kira", "Kira@shinigami.com", "ryuk","muhaha","cool",""))
+                val response = repository.togglePostDone("673ba58d85832516e770a43b",
+                    ToggleDoneRequest(true)
+                )
                 responseLiveData.postValue("User Created: $response")
             } catch (e: Exception) {
                 responseLiveData.postValue("Error: ${e.message}")
@@ -35,16 +40,21 @@ class ApiTestViewModel @Inject constructor(
         }
     }
 
-    fun loginUser() {
+    fun testApi2() {
         viewModelScope.launch {
             try {
-                //673b91e34f7b7f509561c898
-                val response = repository.removeBlockedUser(RemoveBlockedUserRequest("naughty1@silly.com","6741ab377c20973a920bfe6b"))
-                Log.d("API chal gyaaaaaaaa","removeBlockUser:  "+ response )
+                //6741ab377c20973a920bfe6b
+
+                //val response = repository.getReportedPosts(AdminDetails("6741ab377c20973a920bfe6b"))
+                //val response = repository.unReportPost("673ba58d85832516e770a43b",AdminDetails("6741ab377c20973a920bfe6b"))
+                val response = repository.deleteUserPosts("67421df185671b4418c6fc06")
+
+
+                Log.d("API chal gyaaaaaaaa","Response:  "+ response )
                 responseLiveData.postValue("User Logged In: $response")
             } catch (e: Exception) {
                 responseLiveData.postValue("Error: ${e.message}")
-                Log.d("API nhi chala","removeBlockUser:  "+ e )
+                Log.d("API nhi chala","Error:  "+ e )
             }
         }
     }
