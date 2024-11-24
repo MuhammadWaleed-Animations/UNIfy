@@ -1,4 +1,4 @@
-package com.mwafaimk.unify.ui.pages.EditProfile
+package com.mwafaimk.unify.ui.pages.editProfile
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -107,14 +107,14 @@ fun EditProfileScreen() {
         // Profile Picture Section
         if (profileImageUri != null) {
             // Display the selected image
-            Image(
-                painter = rememberAsyncImagePainter(profileImageUri),
-                contentDescription = "Profile Picture",
-                modifier = Modifier
-                    .size(100.dp)
-                    .background(Color.Gray),
-                contentScale = ContentScale.Crop
-            )
+//            Image(
+//                painter = rememberAsyncImagePainter(profileImageUri),
+//                contentDescription = "Profile Picture",
+//                modifier = Modifier
+//                    .size(100.dp)
+//                    .background(Color.Gray),
+//                contentScale = ContentScale.Crop
+//            )
         } else {
             // Placeholder for the image area
             Box(
