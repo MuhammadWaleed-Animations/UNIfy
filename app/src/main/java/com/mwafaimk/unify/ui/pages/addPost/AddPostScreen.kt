@@ -26,7 +26,8 @@ import com.mwafaimk.unify.ui.components.PostButton
 import com.mwafaimk.unify.ui.components.TextInputField
 
 @Composable
-fun AddPostScreen() {
+fun AddPostScreen(onNavigate: (String) -> Unit) {
+
     // State variables for each TextInputField
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
