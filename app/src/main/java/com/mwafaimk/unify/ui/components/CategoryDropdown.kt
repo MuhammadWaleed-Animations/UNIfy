@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
@@ -18,33 +19,36 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-
 @Composable
 fun CategoryDropdown(
     selectedCategory: String,
-    onCategorySelected: (String) -> Unit // Callback to update parent state
+    onCategorySelected: (String) -> Unit, // Callback to update parent state
+    modifier: Modifier = Modifier // Add modifier parameter
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val categories = listOf("Sports", "Education", "General", "Lost and Found", "Event Notification")
+    val categories = listOf("Sports▼", "Education▼", "General▼", "Lost and Found▼", "Event Notification▼")
 
     Box(
-        modifier = Modifier
+        modifier = modifier // Use the modifier passed from the parent
             .padding(vertical = 8.dp)
             .fillMaxWidth()
     ) {
         ElevatedButton(
             onClick = { expanded = true },
             colors = ButtonDefaults.elevatedButtonColors(containerColor = Color.Yellow),
-            shape = RoundedCornerShape(4.dp), // Optional: Rectangular button
-            modifier = Modifier.fillMaxWidth() // Ensure button fills the maximum width
+            shape = RoundedCornerShape(4.dp),
+            modifier = Modifier
+                .width(350.dp) // Set width for the button
+                .padding(8.dp)
         ) {
             Text(text = selectedCategory, color = Color.Black)
         }
+
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
             modifier = Modifier
-                .fillMaxWidth() // Make dropdown menu fill the maximum width
+                .width(350.dp)
                 .background(Color.Yellow)
         ) {
             categories.forEach { category ->

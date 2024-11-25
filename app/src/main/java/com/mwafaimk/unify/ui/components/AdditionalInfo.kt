@@ -44,8 +44,8 @@ fun AdditionalInfo(postData: PostData) {
             fontSize = 13.sp,
             color = Color.Black
         )
-        Spacer(modifier = Modifier.width(30.dp))
-// I am removing this functionality from here. Before it was icon functionality but I removed it
+      //  Spacer(modifier = Modifier.width(30.dp))
+
 
         // Adding the "🔗" ASCII character as a button
 //        TextButton(
