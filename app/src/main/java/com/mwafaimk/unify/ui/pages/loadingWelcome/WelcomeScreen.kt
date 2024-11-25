@@ -7,14 +7,22 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mwafaimk.unify.core.navigation.NavRoutes
+import kotlinx.coroutines.delay
 
 @Composable
-fun WelcomeScreen() {
+fun WelcomeScreen(onNavigate: (String) -> Unit) {
+    // Trigger a navigation after a delay of 2 seconds
+    LaunchedEffect(Unit) {
+        delay(2000L) // 2-second delay
+        onNavigate(NavRoutes.Home) // Trigger navigation
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()

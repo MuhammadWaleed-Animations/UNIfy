@@ -25,12 +25,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mwafaimk.unify.R
+import com.mwafaimk.unify.core.navigation.NavRoutes
 import com.mwafaimk.unify.ui.components.PostCard
 import com.mwafaimk.unify.ui.components.PostData
 
 
 @Composable
-fun HomePage() {
+fun HomePage(onNavigate: (String) -> Unit) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
             // Profile Section
@@ -85,7 +86,7 @@ fun HomePage() {
 
         // Floating Action Button
         ExtendedFloatingActionButton(
-            onClick = { /* Add post action */ },
+            onClick ={onNavigate(NavRoutes.AddPost) },
             containerColor = Color(0xFF7C4DFF),
             contentColor = Color.White,
             modifier = Modifier

@@ -1,4 +1,4 @@
-package com.mwafaimk.unify.ui.pages.login.viewModel
+package com.mwafaimk.unify.ui.pages.signIn.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,7 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(
+class SignInViewModel @Inject constructor(
     private val repository: NetworkRepository
 ) : ViewModel() {
 

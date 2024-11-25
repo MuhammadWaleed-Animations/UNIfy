@@ -6,7 +6,8 @@ import androidx.activity.compose.setContent
 import dagger.hilt.android.AndroidEntryPoint
 
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.mwafaimk.unify.ui.pages.homePage.HomePage
+import com.mwafaimk.unify.core.navigation.AppNavigation
+
 import com.mwafaimk.unify.ui.pages.test.ApiTestScreen
 import com.mwafaimk.unify.ui.pages.test.viewmodel.ApiTestViewModel
 
@@ -15,12 +16,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-//            val signInViewModel = viewModel<SignInViewModel>()
-//            SignInScreen(viewModel = signInViewModel)
-
             val apiTestViewModel = viewModel<ApiTestViewModel>()
-            //ApiTestScreen(viewModel = apiTestViewModel)
-            HomePage()
+            ApiTestScreen(viewModel = apiTestViewModel)
+            //HomePage()
+            //SignUpScreen()
+            //AppNavigation()
         }
     }
 }

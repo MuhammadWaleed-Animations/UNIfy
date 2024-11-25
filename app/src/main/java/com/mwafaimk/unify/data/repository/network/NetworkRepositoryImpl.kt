@@ -1,6 +1,5 @@
 package com.mwafaimk.unify.data.repository.network
 
-import com.mwafaimk.unify.core.util.datastore.AuthStateManager
 import com.mwafaimk.unify.data.model.admin.AdminDetails
 import com.mwafaimk.unify.data.model.blockedUser.BlockUserRequest
 import com.mwafaimk.unify.data.model.blockedUser.BlockUserResponse
@@ -18,6 +17,7 @@ import com.mwafaimk.unify.data.model.post.updatePost.UpdatePostDetails
 import com.mwafaimk.unify.data.model.post.updatePost.UpdatePostRequest
 import com.mwafaimk.unify.data.model.post.updatePost.UpdatePostResponse
 import com.mwafaimk.unify.data.model.user.User
+import com.mwafaimk.unify.data.model.user.checkUsername.CheckUsernameResponse
 import com.mwafaimk.unify.data.model.user.createUser.CreateUserRequest
 import com.mwafaimk.unify.data.model.user.createUser.CreateUserResponse
 import com.mwafaimk.unify.data.model.user.deleteUser.DeleteUserResponse
@@ -54,6 +54,12 @@ class NetworkRepositoryImpl @Inject constructor(
     override suspend fun deleteUser(userId: String): DeleteUserResponse {
         return apiService.deleteUser(userId)
     }
+
+    override suspend fun checkUsername(username: String): CheckUsernameResponse {
+        return apiService.checkUsername(username)
+    }
+
+
 
 
 
