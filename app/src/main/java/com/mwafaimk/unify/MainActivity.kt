@@ -19,9 +19,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             //val apiTestViewModel = viewModel<ApiTestViewModel>()
            // ApiTestScreen(viewModel = apiTestViewModel)
-            HomePage(userEmail = "l226944@lhr.nu.edu.pk")
+            //HomePage(userEmail = "l226944@lhr.nu.edu.pk")
             //SignUpScreen()
-            //AppNavigation()
+            AppNavigation()
         }
     }
 }
