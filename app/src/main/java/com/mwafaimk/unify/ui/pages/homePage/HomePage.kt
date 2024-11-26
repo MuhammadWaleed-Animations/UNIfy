@@ -71,7 +71,7 @@ fun HomePage(onNavigate: (String) -> Unit) {
             ) {
                 items(10) { // Replace 10 with a dynamic value if needed
                     val postData = PostData(
-                        profileImage = R.drawable.cat1,
+                        profileImage = R.drawable.cat3,
                         userName = "Meow",
                         userEmail = "l226824@lhr.nu.edu.pk",
                         eventTitle = "Anime Watch Party",

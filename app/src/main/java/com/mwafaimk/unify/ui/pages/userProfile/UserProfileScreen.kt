@@ -20,7 +20,7 @@ import com.mwafaimk.unify.ui.components.UserProfileContent
 import com.mwafaimk.unify.ui.components.signoutbutton
 
 @Composable
-fun UserPageScreen() {
+fun UserPageScreen(onNavigate: (String) -> Unit) {
     // State to manage dialog visibility
     var showDialog by remember { mutableStateOf(false) }
 

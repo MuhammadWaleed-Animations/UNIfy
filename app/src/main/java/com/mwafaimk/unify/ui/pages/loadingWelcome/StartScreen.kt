@@ -1,4 +1,4 @@
-package com.mwafaimk.unify.ui.pages.signUp
+package com.mwafaimk.unify.ui.pages.loadingWelcome
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

@@ -152,6 +152,8 @@ dependencies {
     // encryption
     implementation(libs.androidx.security.crypto)
 
+    //coil
+    implementation (libs.coil.compose)
 }
 
 kapt {

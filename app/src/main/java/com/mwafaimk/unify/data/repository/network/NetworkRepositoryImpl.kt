@@ -59,6 +59,10 @@ class NetworkRepositoryImpl @Inject constructor(
         return apiService.checkUsername(username)
     }
 
+    override suspend fun checkEmail(email: String): CheckUsernameResponse {
+        return apiService.checkEmail(email)
+    }
+
 
 
 

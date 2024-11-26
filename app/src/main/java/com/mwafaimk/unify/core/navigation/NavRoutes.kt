@@ -11,4 +11,5 @@ object NavRoutes {
     const val EditPost = "editPost"
     const val AddPost = "addPost"
     const val UserProfile = "userProfile"
+    const val EditProfile = "editProfile"
 }

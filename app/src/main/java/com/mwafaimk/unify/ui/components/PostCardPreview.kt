@@ -10,7 +10,7 @@ import com.mwafaimk.unify.R
 @Composable
 fun PostCardPreview() {
     val postData = PostData(
-        profileImage = R.drawable.cat1,
+        profileImage = R.drawable.cat3,
         userName = "Meow",
         userEmail = "l226824@lhr.nu.edu.pk",
         eventTitle = "Anime Watch Party",

@@ -27,7 +27,6 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-
     @Provides
     @Singleton
     fun provideRetrofit(): Retrofit {
