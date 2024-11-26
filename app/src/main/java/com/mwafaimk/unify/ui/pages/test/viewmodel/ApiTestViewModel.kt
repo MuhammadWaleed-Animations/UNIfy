@@ -47,7 +47,7 @@ class ApiTestViewModel @Inject constructor(
 
                 //val response = repository.getReportedPosts(AdminDetails("6741ab377c20973a920bfe6b"))
                 //val response = repository.unReportPost("673ba58d85832516e770a43b",AdminDetails("6741ab377c20973a920bfe6b"))
-                val response = repository.checkUsername("mw1")//deleteUserPosts("67421df185671b4418c6fc06")
+                val response = repository.checkEmail("mw1@mw.com")//checkUsername("mw1")//deleteUserPosts("67421df185671b4418c6fc06")
 
 
                 Log.d("API chal gyaaaaaaaa","Response:  "+ response )

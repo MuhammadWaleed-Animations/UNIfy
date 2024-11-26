@@ -9,6 +9,7 @@ import com.mwafaimk.unify.data.model.user.login.LoginRequest
 import com.mwafaimk.unify.data.model.user.login.LoginResponse
 import com.mwafaimk.unify.data.model.user.updateUser.UpdateUserRequest
 import com.mwafaimk.unify.data.model.user.updateUser.UpdateUserResponse
+import retrofit2.http.Path
 
 interface UserNetworkRepository {
     suspend fun createUser(request: CreateUserRequest): CreateUserResponse
@@ -17,4 +18,6 @@ interface UserNetworkRepository {
     suspend fun updateUser(userId: String,request: UpdateUserRequest): UpdateUserResponse
     suspend fun deleteUser(userId: String): DeleteUserResponse
     suspend fun checkUsername(username: String): CheckUsernameResponse
+    suspend fun checkEmail(email: String): CheckUsernameResponse
+
 }

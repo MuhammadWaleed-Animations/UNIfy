@@ -10,7 +10,6 @@ import javax.inject.Inject
 class EditProfileViewModel @Inject constructor(
     private val repository: NetworkRepository
 ) : ViewModel() {
-
     val responseLiveData = MutableLiveData<String>()
 
     fun fun1() {

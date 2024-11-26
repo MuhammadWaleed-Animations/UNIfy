@@ -35,7 +35,7 @@ var globalContactNo = mutableStateOf("420")
 var globalBio = mutableStateOf("an eye for an eye wont make the whole world blind, just more pirate-y")
 
 @Composable
-fun EditProfileScreen() {
+fun EditProfileScreen(onNavigate: (String) -> Unit) {
     // State to hold the selected image URI
     var profileImageUri by remember { mutableStateOf<Uri?>(null) }
 

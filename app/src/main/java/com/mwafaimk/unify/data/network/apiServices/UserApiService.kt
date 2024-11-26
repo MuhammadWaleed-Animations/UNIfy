@@ -27,7 +27,6 @@ interface UserApiService {
     @POST("/users/{userId}")
     suspend fun getUser(@Path("userId") userId: String): User
 
-
     @PUT("/users/{userId}")
     suspend fun updateUser(@Path("userId") userId: String, @Body request: UpdateUserRequest): UpdateUserResponse
 
@@ -37,4 +36,6 @@ interface UserApiService {
     @GET("/users/check-username/{username}")
     suspend fun checkUsername(@Path("username") username: String): CheckUsernameResponse
 
+    @GET("/users/check-email/{email}")
+    suspend fun checkEmail(@Path("email") email: String): CheckUsernameResponse
 }
