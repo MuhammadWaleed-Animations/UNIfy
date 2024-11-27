@@ -1,5 +1,14 @@
 package com.mwafaimk.unify.ui.components
-
+import androidx.compose.foundation.text.selection.LocalTextSelectionColors
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -18,10 +27,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,7 +39,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
 @Composable
 fun PostCard(postData: PostData) {
     Card(
@@ -47,8 +51,12 @@ fun PostCard(postData: PostData) {
         ),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
-        Box {
-            Column(modifier = Modifier.padding(12.dp)) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp) // Padding for the content
+        ) {
+            Column {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     ProfileSection(postData)
                     Spacer(modifier = Modifier.weight(1f))
@@ -58,7 +66,8 @@ fun PostCard(postData: PostData) {
                 Spacer(modifier = Modifier.height(8.dp))
                 AdditionalInfo(postData)
             }
-            // Adding the flag as a button at the top-right corner
+
+            // Flag button at the top-right
             TextButton(
                 onClick = {
                     // Handle flag click here
@@ -74,21 +83,31 @@ fun PostCard(postData: PostData) {
                 )
             }
 
-            // Adding the "🔗" button at the bottom-right corner
-            TextButton(
-                onClick = {
-                    // Handle button click here
-                },
+            // Link button at the bottom-right
+            LinkButton(
+                linkToCopy = "https://example.com",
                 modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(16.dp)
-            ) {
-                Text(
-                    text = "\uD83D\uDD17",
-                    fontSize = 16.sp,
-                    color = Color.Red // Ensures visibility
-                )
-            }
+                    .align(Alignment.BottomEnd) // Correct alignment inside Box
+                    .padding(8.dp)
+            )
         }
+    }
+}
+
+@Composable
+fun LinkButton(linkToCopy: String, modifier: Modifier = Modifier) {
+    val clipboardManager = LocalClipboardManager.current
+
+    TextButton(
+        onClick = {
+            clipboardManager.setText(AnnotatedString(linkToCopy)) // Copies link to clipboard
+        },
+        modifier = modifier // Modifier passed from the caller
+    ) {
+        Text(
+            text = "\uD83D\uDD17", // Unicode for 🔗
+            fontSize = 16.sp,
+            color = Color.Red // Sets the icon/text color
+        )
     }
 }
