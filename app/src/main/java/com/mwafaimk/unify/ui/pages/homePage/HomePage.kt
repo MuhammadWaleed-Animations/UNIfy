@@ -26,6 +26,7 @@ import com.mwafaimk.unify.ui.components.PostCard
 import com.mwafaimk.unify.ui.components.PostData
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -33,13 +34,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mwafaimk.unify.ui.components.AddPostButton
 import com.mwafaimk.unify.ui.components.CategoryDropdown // Import the CategoryDropdown composable
 import com.mwafaimk.unify.ui.pages.signUp.viewModel.SignUpViewModel
-
+import coil.compose.AsyncImage
 
 @Composable
 fun HomePage(onNavigate: (String) -> Unit , userEmail: String,viewModel: SignUpViewModel = hiltViewModel()) {
@@ -79,15 +81,24 @@ fun HomePage(onNavigate: (String) -> Unit , userEmail: String,viewModel: SignUpV
                     modifier = Modifier.weight(1f) // Allow the dropdown to take available space
                 )
 
-                // Profile Icon
-                Icon(
-                    painter = painterResource(id = R.drawable.cat2), // Replace with your image resource ID
+//                // Profile Icon
+//                Icon(
+//                    painter = painterResource(id = R.drawable.cat2), // Replace with your image resource ID
+//                    contentDescription = "Profile Image",
+//                    modifier = Modifier
+//                        .size(48.dp)
+//                        .padding(start = 8.dp) // Padding between icon and dropdown
+//                        .clickable { onNavigate(NavRoutes.UserProfile) } // Add click action for profile icon
+//                )
+                AsyncImage(
+                    model = R.drawable.cat2, // Replace with the correct drawable resource or URL
                     contentDescription = "Profile Image",
                     modifier = Modifier
                         .size(48.dp)
-                        .padding(start = 8.dp) // Padding between icon and dropdown
-                        .clickable { onNavigate(NavRoutes.UserProfile) } // Add click action for profile icon
+                        .clip(CircleShape)
+                        .clickable { onNavigate(NavRoutes.UserProfile) }
                 )
+
             }
 
             // Posts List

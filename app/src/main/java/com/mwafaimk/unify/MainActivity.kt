@@ -17,10 +17,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            //val apiTestViewModel = viewModel<ApiTestViewModel>()
-           // ApiTestScreen(viewModel = apiTestViewModel)
-            //HomePage(userEmail = "l226944@lhr.nu.edu.pk")
-            //SignUpScreen()
+            // val apiTestViewModel = viewModel<ApiTestViewModel>()
+            // ApiTestScreen(viewModel = apiTestViewModel)
+            // HomePage(userEmail = "l226944@lhr.nu.edu.pk")
+            // SignUpScreen()
             AppNavigation()
         }
     }
