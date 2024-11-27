@@ -1,15 +1,8 @@
 package com.mwafaimk.unify.ui.pages.homePage
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -18,6 +11,8 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,14 +21,38 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mwafaimk.unify.R
 import com.mwafaimk.unify.core.navigation.NavRoutes
+import com.mwafaimk.unify.ui.components.CategoryDropdown
 import com.mwafaimk.unify.ui.components.PostCard
 import com.mwafaimk.unify.ui.components.PostData
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.mwafaimk.unify.ui.components.AddPostButton
+import com.mwafaimk.unify.ui.components.CategoryDropdown // Import the CategoryDropdown composable
+import com.mwafaimk.unify.ui.pages.signUp.viewModel.SignUpViewModel
 
 
 @Composable
-fun HomePage(onNavigate: (String) -> Unit) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Column {
+fun HomePage(onNavigate: (String) -> Unit , userEmail: String,viewModel: SignUpViewModel = hiltViewModel()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black) // Set the background color to black
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 80.dp) // Leave space for the floating button
+        ) {
             // Profile Section
             Row(
                 modifier = Modifier
@@ -41,27 +60,34 @@ fun HomePage(onNavigate: (String) -> Unit) {
                     .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Default Profile Icon
+                // Profile Details
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth() // Fill the available width
+                    .padding(16.dp), // Add padding as needed
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start // Align children to the start
+            ) {
+                // Category Dropdown
+                var selectedCategory by remember { mutableStateOf("Select...▼") }
+
+                CategoryDropdown(
+                    selectedCategory = selectedCategory,
+                    onCategorySelected = { selectedCategory = it },
+                    modifier = Modifier.weight(1f) // Allow the dropdown to take available space
+                )
+
+                // Profile Icon
                 Icon(
-                    imageVector = Icons.Default.AccountCircle, // Default account circle icon
-                    contentDescription = "Profile Icon",
+                    painter = painterResource(id = R.drawable.cat2), // Replace with your image resource ID
+                    contentDescription = "Profile Image",
                     modifier = Modifier
                         .size(48.dp)
-                        .padding(end = 8.dp)
+                        .padding(start = 8.dp) // Padding between icon and dropdown
+                        .clickable { onNavigate(NavRoutes.UserProfile) } // Add click action for profile icon
                 )
-                // Profile Details
-                Column {
-                    Text(
-                        text = "Welcome, User!",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Text(
-                        text = "l226824@lhr.nu.edu.pk",
-                        fontSize = 14.sp,
-                        color = Color.Gray
-                    )
-                }
             }
 
             // Posts List
@@ -84,28 +110,18 @@ fun HomePage(onNavigate: (String) -> Unit) {
             }
         }
 
-        // Floating Action Button
-        ExtendedFloatingActionButton(
-            onClick ={onNavigate(NavRoutes.AddPost) },
-            containerColor = Color(0xFF7C4DFF),
-            contentColor = Color.White,
+       // Spacer(modifier = Modifier.height(20.dp))
+        // Fixed AddPostButton at the bottom
+        AddPostButton(
+            onClick = {
+                onNavigate(NavRoutes.AddPost)
+            },
             modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(16.dp)
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Default.Add, // Built-in add icon
-                    contentDescription = "Add Post Icon",
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "Add Post",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-        }
+                .align(Alignment.BottomCenter) // Position button at the bottom
+                .padding(16.dp) // Optional: Padding to separate from the edges
+        )
     }
 }
+
+
+

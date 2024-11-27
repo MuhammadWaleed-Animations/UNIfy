@@ -10,13 +10,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.mwafaimk.unify.core.navigation.NavRoutes
+import com.mwafaimk.unify.ui.pages.signIn.viewModel.SignInViewModel
 
 @Composable
 
-fun EditProfileButton()
+fun EditProfileButton(onNavigate: (String) -> Unit , viewModel: SignInViewModel = hiltViewModel())
 {
     Button(
-        onClick = { /* TODO: Add Edit Profile functionality brother i.e edit prof scrn */ },
+        onClick = { onNavigate(NavRoutes.EditProfile) },
         colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
         modifier = Modifier.fillMaxWidth(0.8f)
     ) {
@@ -32,5 +35,5 @@ fun EditProfileButton()
 @Preview(showBackground = true)
 @Composable
 fun PreviewEditProfileButton() {
-    EditProfileButton()
+    //EditProfileButton()
 }

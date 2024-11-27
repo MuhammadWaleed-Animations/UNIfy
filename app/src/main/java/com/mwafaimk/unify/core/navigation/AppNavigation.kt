@@ -6,8 +6,10 @@ import androidx.navigation.compose.NavHost
 
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.mwafaimk.unify.ui.components.EditProfileButton
 import com.mwafaimk.unify.ui.pages.addPost.AddPostScreen
 import com.mwafaimk.unify.ui.pages.editPost.EditPostScreen
+import com.mwafaimk.unify.ui.pages.editProfile.EditProfileScreen
 import com.mwafaimk.unify.ui.pages.homePage.HomePage
 import com.mwafaimk.unify.ui.pages.loadingWelcome.LoadingScreen
 import com.mwafaimk.unify.ui.pages.loadingWelcome.WelcomeScreen
@@ -28,12 +30,12 @@ fun AppNavigation() {
 
         composable(NavRoutes.SignUp)        { SignUpScreen(onNavigate = navController::navigate) }
         composable(NavRoutes.SignIn)        { SignInScreen(onNavigate = navController::navigate) }
-        composable(NavRoutes.Home)          { HomePage(onNavigate = navController::navigate) }
+        composable(NavRoutes.Home)          { HomePage(onNavigate = navController::navigate,"l226824") }
         composable(NavRoutes.Loading)       { LoadingScreen(onNavigate = navController::navigate) }
         composable(NavRoutes.Welcome)       { WelcomeScreen(onNavigate = navController::navigate) }
         composable(NavRoutes.AddPost)       { AddPostScreen(onNavigate = navController::navigate) }
         composable(NavRoutes.EditPost)      { EditPostScreen(onNavigate = navController::navigate) }
         composable(NavRoutes.UserProfile)   { UserPageScreen(onNavigate = navController::navigate)}
-        composable(NavRoutes.EditProfile)   { EditPostScreen(onNavigate = navController::navigate) }
+        composable(NavRoutes.EditProfile)   { EditProfileScreen(onNavigate = navController::navigate) }
     }
 }

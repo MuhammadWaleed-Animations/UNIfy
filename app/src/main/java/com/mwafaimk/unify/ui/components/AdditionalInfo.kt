@@ -16,11 +16,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mwafaimk.unify.R
 
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.Text
+
 @Composable
 fun AdditionalInfo(postData: PostData) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
@@ -34,12 +44,21 @@ fun AdditionalInfo(postData: PostData) {
             fontSize = 13.sp,
             color = Color.Black
         )
-        Spacer(modifier = Modifier.width(20.dp))
-        Icon(
-            painter = painterResource(id = R.drawable.attached),
-            contentDescription = "Refresh Icon",
-            tint = Color.Black,
-            modifier = Modifier.size(16.dp)
-        )
+      //  Spacer(modifier = Modifier.width(30.dp))
+
+
+        // Adding the "🔗" ASCII character as a button
+//        TextButton(
+//            onClick = {
+//                // Handle button click here
+//            },
+//            modifier = Modifier.size(30.dp) // Optional: Adjust size
+//        ) {
+//            Text(
+//                text = "\uD83D\uDD17",
+//                fontSize = 16.sp,
+//                color = Color.Red // Ensures the character is visible
+//            )
+//        }
     }
 }
