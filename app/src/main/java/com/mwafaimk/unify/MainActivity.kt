@@ -10,6 +10,7 @@ import com.mwafaimk.unify.core.navigation.AppNavigation
 import com.mwafaimk.unify.ui.pages.homePage.HomePage
 
 import com.mwafaimk.unify.ui.pages.test.ApiTestScreen
+import com.mwafaimk.unify.ui.pages.test.DataStoreTestScreen
 import com.mwafaimk.unify.ui.pages.test.viewmodel.ApiTestViewModel
 
 @AndroidEntryPoint
@@ -22,6 +23,7 @@ class MainActivity : ComponentActivity() {
             // HomePage(userEmail = "l226944@lhr.nu.edu.pk")
             // SignUpScreen()
             AppNavigation()
+            //DataStoreTestScreen()
         }
     }
 }

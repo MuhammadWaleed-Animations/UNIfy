@@ -1,6 +1,0 @@
-package com.mwafaimk.unify.data.model.user
-
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class LoginUser(val username: String, val password: String)

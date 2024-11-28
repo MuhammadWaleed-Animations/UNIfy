@@ -10,9 +10,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
-object AuthPreferencesKeys {
-    val IS_LOGGED_IN_KEY = booleanPreferencesKey("is_logged_in")
-}
 
 class AuthStateManager @Inject constructor(
     private val dataStore: DataStore<Preferences>

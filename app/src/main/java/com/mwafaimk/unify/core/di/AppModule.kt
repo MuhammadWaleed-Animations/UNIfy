@@ -47,6 +47,38 @@ object AppModule {
     fun provideNetworkRepository(apiService: ApiService): NetworkRepository {
         return NetworkRepositoryImpl(apiService)
     }
+
+
+    @Provides
+    @Singleton
+    fun provideDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
+        return context.dataStore
+    }
+
+    @Provides
+    @Singleton
+    fun provideDataStoreManager(dataStore: DataStore<Preferences>): DataStoreManager {
+        return DataStoreManager(dataStore)
+    }
+
+    @Singleton
+    @Provides
+    fun provideApplicationContext(app: Application): Context {
+        return app.applicationContext
+    }
+
+    @Singleton
+    @Provides
+    fun provideAuthStateManager(dataStore: DataStore<Preferences>): AuthStateManager {
+        return AuthStateManager(dataStore)
+    }
+
+
+    @Singleton
+    @Provides
+    fun provideDataManager(dataStoreManager: DataStoreManager): DataManager {
+        return DataManager(dataStoreManager = dataStoreManager)
+    }
 }
 
 
