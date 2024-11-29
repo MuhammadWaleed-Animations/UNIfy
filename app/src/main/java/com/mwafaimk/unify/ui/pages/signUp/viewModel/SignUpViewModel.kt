@@ -6,23 +6,46 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mwafaimk.unify.core.util.datastore.AuthStateManager
+import com.mwafaimk.unify.core.util.datastore.DataManager
+import com.mwafaimk.unify.data.model.user.User
 import com.mwafaimk.unify.data.repository.network.NetworkRepository
 import com.mwafaimk.unify.data.model.user.checkUsername.CheckUsernameResponse
 import com.mwafaimk.unify.data.model.user.createUser.CreateUserRequest
 import com.mwafaimk.unify.data.model.user.createUser.CreateUserResponse
+import com.mwafaimk.unify.data.model.user.login.LoginResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val repository: NetworkRepository
+    private val repository: NetworkRepository,
+    private val dataManager: DataManager,
+    private val authStateManager: AuthStateManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SignUpState())
     val uiState: StateFlow<SignUpState> get() = _uiState
+
+
+    // Method to set login state
+    fun setLoginState(isLoggedIn: Boolean) {
+        viewModelScope.launch {
+            authStateManager.setLoginState(isLoggedIn)
+        }
+    }
+
+    // Save user data
+    fun saveUser(user: LoginResponse) {
+        viewModelScope.launch {
+            dataManager.saveUser(user)
+        }
+    }
+
 
 
     fun checkEmail(email: String){
@@ -75,6 +98,8 @@ class SignUpViewModel @Inject constructor(
                 val response = repository.createUser(CreateUserRequest(username,email,password,contactInfo,pfp,organization))
                 if (response.message == "User created successfully") {
                     _uiState.value = _uiState.value.copy(signUpError = "", signUpSuccess = true)
+                    saveUser(LoginResponse(User(response.userId,username,email,password,contactInfo,pfp,organization),false))
+                    setLoginState(true)
                 } else {
                     _uiState.value = _uiState.value.copy(signUpError = response.message)
                 }

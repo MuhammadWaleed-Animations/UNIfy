@@ -38,12 +38,12 @@ fun VisitingUserScreen() {
             .background(Color.Black)
     ) {
         // Display the profile content at the top using our function in UserProfileContent
-        UserProfileContent(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .align(Alignment.TopCenter)
-        )
+//        UserProfileContent(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(16.dp)
+//                .align(Alignment.TopCenter)
+//        )
 
     }
 

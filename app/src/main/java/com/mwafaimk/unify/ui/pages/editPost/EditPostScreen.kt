@@ -1,5 +1,6 @@
 package com.mwafaimk.unify.ui.pages.editPost
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mwafaimk.unify.ui.components.CategoryDropdown
 import com.mwafaimk.unify.ui.components.PageTitle
+import com.mwafaimk.unify.ui.components.PfpSelectionDialog
 import com.mwafaimk.unify.ui.components.PostButton
 import com.mwafaimk.unify.ui.components.TextInputField
 
@@ -128,4 +130,6 @@ fun EditPostScreen(onNavigate: (String) -> Unit) {
             )
         }
     }
+
+
 }

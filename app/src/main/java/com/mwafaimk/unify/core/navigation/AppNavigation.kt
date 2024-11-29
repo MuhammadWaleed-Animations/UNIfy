@@ -18,16 +18,17 @@ import com.mwafaimk.unify.ui.pages.signIn.viewModel.SignInViewModel
 import com.mwafaimk.unify.ui.pages.signUp.SignUpScreen
 import com.mwafaimk.unify.ui.pages.loadingWelcome.StartScreen
 import com.mwafaimk.unify.ui.pages.signUp.viewModel.SignUpViewModel
+import com.mwafaimk.unify.ui.pages.splashScreen.SplashScreen
 import com.mwafaimk.unify.ui.pages.userProfile.UserPageScreen
 
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = NavRoutes.Start) {
+    NavHost(navController = navController, startDestination = NavRoutes.SplashScreen) {
 
-        composable(NavRoutes.Start) { StartScreen(onNavigate = navController::navigate) }
-
+        composable(NavRoutes.Start)         { StartScreen(onNavigate = navController::navigate) }
+        composable(NavRoutes.SplashScreen)  { SplashScreen(onNavigate = navController::navigate) }
         composable(NavRoutes.SignUp)        { SignUpScreen(onNavigate = navController::navigate) }
         composable(NavRoutes.SignIn)        { SignInScreen(onNavigate = navController::navigate) }
         composable(NavRoutes.Home)          { HomePage(onNavigate = navController::navigate,"l226824") }
