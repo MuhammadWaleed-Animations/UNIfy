@@ -9,19 +9,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mwafaimk.unify.data.model.post.PostDetails
 
 
 @Composable
-fun EventDetails(postData: PostData) {
+fun EventDetails(postData: PostDetails) {
     Text(
-        text = postData.eventTitle,
+        text = postData.title,
         fontWeight = FontWeight.Bold,
         fontSize = 14.sp,
         color = Color.Black
     )
     Spacer(modifier = Modifier.height(4.dp))
     Text(
-        text = postData.eventDescription,
+        text = postData.description,
         fontSize = 13.sp,
         color = Color.Black
     )

@@ -26,21 +26,22 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.Text
+import com.mwafaimk.unify.data.model.post.PostDetails
 
 @Composable
-fun AdditionalInfo(postData: PostData) {
+fun AdditionalInfo(postData: PostDetails) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = postData.eventTime,
+            text = postData.time?:"Any time",
             fontSize = 13.sp,
             color = Color.Black,
         )
         Spacer(modifier = Modifier.weight(1f))
         Text(
-            text = postData.additionalInfo,
+            text = postData.memberCount?:"Jitnay zyada utna acha",
             fontSize = 13.sp,
             color = Color.Black
         )

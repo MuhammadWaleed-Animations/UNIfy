@@ -26,7 +26,7 @@ fun CategoryDropdown(
     modifier: Modifier = Modifier // Add modifier parameter
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val categories = listOf("Sports▼", "Education▼", "General▼", "Lost and Found▼", "Event Notification▼")
+    val categories = listOf("General", "Sports","Study", "Music", "Lost and Found","Event Notification","Chill","Fries","Movie/Anime","Own Posts")
 
     Box(
         modifier = modifier // Use the modifier passed from the parent

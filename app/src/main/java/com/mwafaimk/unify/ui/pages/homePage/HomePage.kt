@@ -1,24 +1,18 @@
 package com.mwafaimk.unify.ui.pages.homePage
 
+import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mwafaimk.unify.R
 import com.mwafaimk.unify.core.navigation.NavRoutes
 import com.mwafaimk.unify.ui.components.CategoryDropdown
@@ -26,25 +20,53 @@ import com.mwafaimk.unify.ui.components.PostCard
 import com.mwafaimk.unify.ui.components.PostData
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.mwafaimk.unify.data.model.post.PostDetails
+import com.mwafaimk.unify.data.model.post.UserIdDetails
 import com.mwafaimk.unify.ui.components.AddPostButton
-import com.mwafaimk.unify.ui.components.CategoryDropdown // Import the CategoryDropdown composable
-import com.mwafaimk.unify.ui.pages.signUp.viewModel.SignUpViewModel
-import coil.compose.AsyncImage
+import com.mwafaimk.unify.ui.pages.homePage.viewModel.HomePageViewModel
+
+
 
 @Composable
-fun HomePage(onNavigate: (String) -> Unit , userEmail: String,viewModel: SignUpViewModel = hiltViewModel()) {
+fun HomePage(onNavigate: (String) -> Unit , viewModel: HomePageViewModel = hiltViewModel()) {
+
+    val userState by viewModel.userState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
+    val posts by viewModel.responseLiveData.collectAsState() // Collect the list of posts
+
+
+    var selectedCategory by remember { mutableStateOf("General") }
+
+    // Call the API when "General" is selected
+    LaunchedEffect(selectedCategory) {
+        if(selectedCategory == "General")
+        {
+            kotlinx.coroutines.delay(700L)
+        }
+        Log.d("HomeScreen", "LaunchedEffect triggered for selectedCategory: $selectedCategory")
+        if(userState?.user != null)
+        {
+            Log.d("userId","Mil gai ha")
+
+            viewModel.homeResponse(userId = userState?.user?._id?:"Error", category = selectedCategory, organization = userState?.user?.organization?:"Error")
+        }
+        else{
+            Log.d("Whattttt","Where did this even go")
+        }
+
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -73,7 +95,6 @@ fun HomePage(onNavigate: (String) -> Unit , userEmail: String,viewModel: SignUpV
                 horizontalArrangement = Arrangement.Start // Align children to the start
             ) {
                 // Category Dropdown
-                var selectedCategory by remember { mutableStateOf("Select...▼") }
 
                 CategoryDropdown(
                     selectedCategory = selectedCategory,
@@ -90,8 +111,8 @@ fun HomePage(onNavigate: (String) -> Unit , userEmail: String,viewModel: SignUpV
 //                        .padding(start = 8.dp) // Padding between icon and dropdown
 //                        .clickable { onNavigate(NavRoutes.UserProfile) } // Add click action for profile icon
 //                )
-                AsyncImage(
-                    model = R.drawable.cat2, // Replace with the correct drawable resource or URL
+                Image(
+                    painter = painterResource(id = pfpHash(userState?.user?.profilePicture?:"Default")), // Load the drawable resource
                     contentDescription = "Profile Image",
                     modifier = Modifier
                         .size(48.dp)
@@ -99,29 +120,71 @@ fun HomePage(onNavigate: (String) -> Unit , userEmail: String,viewModel: SignUpV
                         .clickable { onNavigate(NavRoutes.UserProfile) }
                 )
 
+
             }
+
+
+            if (uiState.isLoading) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize(), // Fill the entire screen
+                    contentAlignment = Alignment.Center // Center content horizontally and vertically
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .size(48.dp), // Optional: Adjust the size of the loader
+                        color = Color.Yellow // Optional: Set the color to match your theme
+                    )
+                }
+            }
+
 
             // Posts List
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(bottom = 70.dp) // Space for Floating Button
             ) {
-                items(10) { // Replace 10 with a dynamic value if needed
-                    val postData = PostData(
-                        profileImage = R.drawable.cat3,
-                        userName = "Meow",
-                        userEmail = "l226824@lhr.nu.edu.pk",
-                        eventTitle = "Anime Watch Party",
-                        eventDescription = "Watching Haikyu in CS13\nMaray lea bhi koi Snacks pakr lana",
-                        eventTime = "3:30 - 4:50",
-                        additionalInfo = "Jitnay zyada utna acha"
-                    )
-                    PostCard(postData = postData)
-                }
-            }
-        }
+                if (!posts.isNullOrEmpty()) {
+                    items(posts!!) { post -> // Iterate over the list of PostDetails
+                        PostCard(
+                            postData = PostDetails(
+                                title = post.title,
+                                description = post.description,
+                                contactInfo = post.contactInfo,
+                                time = post.time,
+                                memberCount = post.memberCount,
+                                category = post.category,
+                                location = post.location,
+                                timestamp = post.timestamp,
+                                userId = UserIdDetails(post._id,post.userId.username,post.userId.email,post.userId.profilePicture),
+                                reported = post.reported,
+                                done = post.done,
+                                _id = post._id
+                            )
 
-       // Spacer(modifier = Modifier.height(20.dp))
+                        )
+                    }
+                } else {
+                    item {
+                        Text(
+                            text = "No posts available",
+                            color = Color.White,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                        )
+                    }
+
+                }
+
+            }
+
+
+
+
+
+        }
+        // Spacer(modifier = Modifier.height(20.dp))
         // Fixed AddPostButton at the bottom
         AddPostButton(
             onClick = {
@@ -131,6 +194,20 @@ fun HomePage(onNavigate: (String) -> Unit , userEmail: String,viewModel: SignUpV
                 .align(Alignment.BottomCenter) // Position button at the bottom
                 .padding(16.dp) // Optional: Padding to separate from the edges
         )
+
+    }
+
+
+}
+
+fun pfpHash(pfp: String):Int
+{
+    when (pfp) {
+        "Cat 1" -> return R.drawable.cat1
+        "Cat 2" -> return R.drawable.cat2
+        "Cat 3" -> return R.drawable.cat3
+        "Cat 4" -> return R.drawable.cat4
+        else -> return R.drawable.a // Default value if not matched
     }
 }
 

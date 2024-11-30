@@ -20,13 +20,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mwafaimk.unify.R
+import com.mwafaimk.unify.data.model.post.PostDetails
 
 
 @Composable
-fun ProfileSection(postData: PostData) {
+fun ProfileSection(postData: PostDetails) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Image(
-            painter = painterResource(id = postData.profileImage),
+            painter = painterResource(id = com.mwafaimk.unify.ui.pages.editProfile.pfpHash(postData?.userId?.profilePicture?:"Default")),
             contentDescription = "Profile Image",
             modifier = Modifier
                 .size(40.dp)
@@ -39,13 +41,13 @@ fun ProfileSection(postData: PostData) {
         Spacer(modifier = Modifier.width(10.dp))
         Column {
             Text(
-                text = postData.userName,
+                text = postData.userId.username?:"Default",
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
                 color = Color.Black
             )
             Text(
-                text = postData.userEmail,
+                text = postData.userId.email,
                 color = Color.DarkGray,
                 fontSize = 12.sp
             )

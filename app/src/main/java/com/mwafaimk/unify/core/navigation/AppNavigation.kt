@@ -31,7 +31,7 @@ fun AppNavigation() {
         composable(NavRoutes.SplashScreen)  { SplashScreen(onNavigate = navController::navigate) }
         composable(NavRoutes.SignUp)        { SignUpScreen(onNavigate = navController::navigate) }
         composable(NavRoutes.SignIn)        { SignInScreen(onNavigate = navController::navigate) }
-        composable(NavRoutes.Home)          { HomePage(onNavigate = navController::navigate,"l226824") }
+        composable(NavRoutes.Home)          { HomePage(onNavigate = navController::navigate) }
         composable(NavRoutes.Loading)       { LoadingScreen(onNavigate = navController::navigate) }
         composable(NavRoutes.Welcome)       { WelcomeScreen(onNavigate = navController::navigate) }
         composable(NavRoutes.AddPost)       { AddPostScreen(onNavigate = navController::navigate) }

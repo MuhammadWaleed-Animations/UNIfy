@@ -39,8 +39,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mwafaimk.unify.data.model.post.PostDetails
+
 @Composable
-fun PostCard(postData: PostData) {
+fun PostCard(postData: PostDetails) {
     Card(
         shape = RoundedCornerShape(16.dp),
         modifier = Modifier
@@ -85,7 +87,7 @@ fun PostCard(postData: PostData) {
 
             // Link button at the bottom-right
             LinkButton(
-                linkToCopy = "https://example.com",
+                linkToCopy = postData.contactInfo?: "I am Batman",
                 modifier = Modifier
                     .align(Alignment.BottomEnd) // Correct alignment inside Box
                     .padding(8.dp)
