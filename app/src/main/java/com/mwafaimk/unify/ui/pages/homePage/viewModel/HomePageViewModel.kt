@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mwafaimk.unify.core.util.datastore.DataManager
 import com.mwafaimk.unify.data.model.post.PostDetails
+import com.mwafaimk.unify.data.model.post.UserIdDetails
 import com.mwafaimk.unify.data.model.post.updatePost.UpdatePostDetails
 import com.mwafaimk.unify.data.model.user.login.LoginResponse
 import com.mwafaimk.unify.data.model.user.updateUser.UpdateUserRequest
@@ -66,6 +67,7 @@ class HomePageViewModel  @Inject constructor(
                 Log.d("HomeViewModel", "inside Home Response with category: $category")
                 _uiState.value = _uiState.value.copy(isLoading = true)
                 val response: List<PostDetails>
+                val userResponse: List<UpdatePostDetails>
 
                 when {
                     category.equals("General", ignoreCase = true) -> {
@@ -74,10 +76,43 @@ class HomePageViewModel  @Inject constructor(
                         _responseLiveData.value = response
                         Log.d("General posts", "Post List: ${response[0]}, ${response[1]}")
                     }
-                    category.equals("Own", ignoreCase = true) -> {
+                    category.equals("Own Posts", ignoreCase = true) -> {
                         Log.d("HomeViewModel", "Category matched: Own")
-                        // Fetch user's own posts
-                        // response = networkRepository.getUserPosts(userId)
+
+                        // Get the user data from userState
+                        val currentUser = userState.value
+
+                        if (currentUser != null) {
+                            val userResponse = networkRepository.getUserPosts(userId)
+
+                            // Map UpdatePostDetails to PostDetails
+                            val mappedPosts = userResponse.map { updatePost ->
+                                PostDetails(
+                                    title = updatePost.title,
+                                    description = updatePost.description,
+                                    contactInfo = updatePost.contactInfo,
+                                    time = updatePost.time,
+                                    memberCount = updatePost.memberCount,
+                                    category = updatePost.category,
+                                    location = updatePost.location,
+                                    timestamp = updatePost.timestamp,
+                                    userId = UserIdDetails(
+                                        _id = currentUser.user?._id?:"home own post current user _id error", // Use userId from userState
+                                        username = currentUser.user?.username ?: "home own post current user username error", // Use username from userState
+                                        email = currentUser.user?.email?:"home own post current user email error", // Use email from userState
+                                        profilePicture = currentUser.user?.profilePicture // Use profile picture from userState
+                                    ),
+                                    reported = updatePost.reported,
+                                    done = updatePost.done,
+                                    _id = updatePost._id
+                                )
+                            }
+
+                            _responseLiveData.value = mappedPosts
+                            Log.d("Own posts", "Post List: ${mappedPosts.joinToString()}")
+                        } else {
+                            Log.e("HomeViewModel", "UserState is null, cannot map Own posts.")
+                        }
                     }
                     else -> {
                         Log.d("HomeViewModel", "Category matched: Other (else)")
