@@ -42,7 +42,7 @@ import androidx.compose.ui.unit.sp
 import com.mwafaimk.unify.data.model.post.PostDetails
 
 @Composable
-fun PostCard(postData: PostDetails) {
+fun PostCard(postData: PostDetails ,onProfileClick: () -> Unit = {}) {
     Card(
         shape = RoundedCornerShape(16.dp),
         modifier = Modifier
@@ -60,7 +60,7 @@ fun PostCard(postData: PostDetails) {
         ) {
             Column {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    ProfileSection(postData)
+                    ProfileSection(postData, onProfileClick = onProfileClick)
                     Spacer(modifier = Modifier.weight(1f))
                 }
                 Spacer(modifier = Modifier.height(8.dp))

@@ -12,6 +12,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,13 +21,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.mwafaimk.unify.core.navigation.NavRoutes
+import com.mwafaimk.unify.data.model.post.createPost.CreatePostRequest
 import com.mwafaimk.unify.ui.components.CategoryDropdown
 import com.mwafaimk.unify.ui.components.PageTitle
 import com.mwafaimk.unify.ui.components.PostButton
 import com.mwafaimk.unify.ui.components.TextInputField
+import com.mwafaimk.unify.ui.pages.addPost.viewModel.AddPostViewModel
 
 @Composable
-fun AddPostScreen(onNavigate: (String) -> Unit) {
+fun AddPostScreen(onNavigate: (String) -> Unit, viewModel: AddPostViewModel = hiltViewModel()) {
 
     // State variables for each TextInputField
     var title by remember { mutableStateOf("") }
@@ -41,11 +46,14 @@ fun AddPostScreen(onNavigate: (String) -> Unit) {
     var selectedCategory by remember { mutableStateOf("Select...") }
 
     // Determine button color based on Title and Description fields
-    val isFormValid = title.isNotBlank() && description.isNotBlank() && selectedCategory != "Select..."
+    val isFormValid = title.isNotBlank() &&timeFrame.isNotBlank() && contactNumber.isNotBlank() &&location.isNotBlank() && membersRequired.isNotBlank() && description.isNotBlank() && selectedCategory != "Select..."
     val buttonColor = if (isFormValid) Color.Red else Color.Gray
 
     // Scroll state
     val scrollState = rememberScrollState()
+
+    //ui state
+    val uiState by viewModel.uiState.collectAsState()
 
     Column(
         modifier = Modifier
@@ -123,9 +131,33 @@ fun AddPostScreen(onNavigate: (String) -> Unit) {
             contentAlignment = Alignment.Center
         ) {
             PostButton(
-                onClick = { /* Handle upload action */ },
+                onClick = {if (isFormValid) {
+                    val postRequest = CreatePostRequest(
+                        title = title,
+                        description = description,
+                        contactInfo = contactNumber.ifBlank { null },
+                        time = timeFrame.ifBlank { null },
+                        memberCount = membersRequired.ifBlank { null },
+                        category = listOf(selectedCategory),
+                        location = location.ifBlank { "N/A" },
+                        userId = viewModel.userState.value?.user?._id ?: ""
+                    )
+                    viewModel.createPost(postRequest)
+                } },
                 buttonColor = buttonColor,
             )
         }
+    }
+    // Handle navigation or error display based on the UI state
+    if (uiState.addPostSuccess) {
+        viewModel.emptyError()
+        onNavigate(NavRoutes.Home) // Navigate to a success screen
+    } else if (uiState.addPostError != null) {
+        // Show an error dialog or message
+        Text(
+            text = uiState.addPostError ?: "An error occurred",
+            color = Color.Red,
+            modifier = Modifier.padding(top = 16.dp)
+        )
     }
 }

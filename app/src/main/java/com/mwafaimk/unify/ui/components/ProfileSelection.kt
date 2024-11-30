@@ -25,7 +25,7 @@ import com.mwafaimk.unify.data.model.post.PostDetails
 
 
 @Composable
-fun ProfileSection(postData: PostDetails) {
+fun ProfileSection(postData: PostDetails, onProfileClick: () -> Unit = {}) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Image(
             painter = painterResource(id = com.mwafaimk.unify.ui.pages.editProfile.pfpHash(postData?.userId?.profilePicture?:"Default")),
@@ -35,6 +35,7 @@ fun ProfileSection(postData: PostDetails) {
                 .clip(CircleShape)
                 .clickable
                 { // todo
+                    //open profile of user
                 }
 
         )

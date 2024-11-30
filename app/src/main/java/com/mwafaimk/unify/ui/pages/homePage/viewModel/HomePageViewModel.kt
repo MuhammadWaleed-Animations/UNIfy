@@ -50,12 +50,6 @@ class HomePageViewModel  @Inject constructor(
         }
     }
 
-    // Save user data
-    fun saveUser(user: LoginResponse) {
-        viewModelScope.launch {
-            dataManager.saveUser(user)
-        }
-    }
 
     fun homeResponse(
         userId:String,
