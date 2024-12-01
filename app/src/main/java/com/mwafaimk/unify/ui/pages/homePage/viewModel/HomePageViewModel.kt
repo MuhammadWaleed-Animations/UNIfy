@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mwafaimk.unify.core.util.datastore.DataManager
 import com.mwafaimk.unify.data.model.admin.AdminDetails
+import com.mwafaimk.unify.data.model.blockedUser.BlockUserRequest
 import com.mwafaimk.unify.data.model.post.PostDetails
 import com.mwafaimk.unify.data.model.post.UserIdDetails
 import com.mwafaimk.unify.data.model.post.updatePost.UpdatePostDetails
@@ -63,11 +64,49 @@ class HomePageViewModel  @Inject constructor(
                 if (response.message == "Post reported successfully") {
                     _toastMessage.value = "Post reported successfully!"
                 } else {
-                    _toastMessage.value = "Failed to report post."
+                    _toastMessage.value = response.message
                 }
             } catch (e: Exception) {
                 _toastMessage.value = "An error occurred. Please try again."
                 Log.e("HomePageViewModel", "Error reporting post", e)
+            } finally {
+                _uiState.value = _uiState.value.copy(isLoading = false)
+            }
+        }
+    }
+    fun blockUser(email:String,reason:String,userId: String)
+    {
+        viewModelScope.launch {
+            try {
+                _uiState.value = _uiState.value.copy(isLoading = true)
+                val response = networkRepository.blockUser(BlockUserRequest(email,reason,userId))
+                if (response.message == "User Blocked successfully") {
+                    _toastMessage.value = "User Blocked successfully!"
+                } else {
+                    _toastMessage.value = response.message
+                }
+            } catch (e: Exception) {
+                _toastMessage.value = "An error occurred. Please try again."
+                Log.e("HomePageViewModel", "Error blocking user", e)
+            } finally {
+                _uiState.value = _uiState.value.copy(isLoading = false)
+            }
+        }
+
+    }
+    fun unReportPost(postId: String, adminId: String) {
+        viewModelScope.launch {
+            try {
+                _uiState.value = _uiState.value.copy(isLoading = true)
+                val response = networkRepository.unReportPost(postId, AdminDetails(adminId))
+                if (response.message == "Post unreported successfully") {
+                    _toastMessage.value = "Post uneReported successfully!"
+                } else {
+                    _toastMessage.value = response.message
+                }
+            } catch (e: Exception) {
+                _toastMessage.value = "An error occurred. Please try again."
+                Log.e("HomePageViewModel", "Error unReporting post", e)
             } finally {
                 _uiState.value = _uiState.value.copy(isLoading = false)
             }
@@ -81,7 +120,7 @@ class HomePageViewModel  @Inject constructor(
         organization:String
     ) {
         val currentUser = userState.value
-
+        //TODO set the server to return posts in descending order
         viewModelScope.launch {
             try {
                 Log.d("HomeViewModel", "inside Home Response with category: $category")

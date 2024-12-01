@@ -167,8 +167,56 @@ fun HomePage(onNavigate: (String) -> Unit , viewModel: HomePageViewModel = hiltV
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(bottom = 70.dp) // Space for Floating Button
             ) {
+                // 🚫 ✅
                 if (!posts.isNullOrEmpty()) {
                     items(posts!!) { post -> // Iterate over the list of PostDetails
+
+                        // Define actions based on the selected category
+                        val postActions = if (selectedCategory == "Reported") {
+                            PostActions(
+                                icon1 = "🚫",
+                                icon2 = "✅",
+                                onReport = { reason ->
+                                    viewModel.blockUser(post?.userId?.email?:"email not found while blocking", reason,userState?.user?._id?:"Admin not found while blocking") // Clear report logic
+                                    if (userState?.user != null) {
+                                        viewModel.homeResponse(
+                                            userId = userState?.user?._id ?: "Error",
+                                            category = selectedCategory,
+                                            organization = userState?.user?.organization ?: "Error"
+                                        )
+                                    }
+                                },
+                                onClear = {
+                                    viewModel.unReportPost(post._id, userState?.user?._id ?: " ") // Clear report logic
+                                    if (userState?.user != null) {
+
+                                        viewModel.homeResponse(
+                                            userId = userState?.user?._id ?: "Error",
+                                            category = selectedCategory,
+                                            organization = userState?.user?.organization ?: "Error"
+                                        )
+                                    }
+                                }
+                            )
+                        } else {
+                            PostActions(
+                                icon1 = "🚩",
+                                icon2 = "\uD83D\uDD17",
+                                onReport = { reason ->
+                                    viewModel.reportPost(post._id, reason) // Standard report logic
+                                    if (userState?.user != null) {
+                                        viewModel.homeResponse(
+                                            userId = userState?.user?._id ?: "Error",
+                                            category = selectedCategory,
+                                            organization = userState?.user?.organization ?: "Error"
+                                        )
+                                    }
+                                },
+                                onClear = {
+                                }
+                            )
+                        }
+
                         PostCard(
                             postData = PostDetails(
                                 title = post.title,
@@ -179,16 +227,20 @@ fun HomePage(onNavigate: (String) -> Unit , viewModel: HomePageViewModel = hiltV
                                 category = post.category,
                                 location = post.location,
                                 timestamp = post.timestamp,
-                                userId = UserIdDetails(post._id,post.userId.username,post.userId.email,post.userId.profilePicture),
+                                userId = UserIdDetails(
+                                    post._id,
+                                    post.userId.username,
+                                    post.userId.email,
+                                    post.userId.profilePicture
+                                ),
                                 reported = post.reported,
                                 done = post.done,
                                 _id = post._id
                             ),
-                            onReport = { reason ->
-                                viewModel.reportPost(post._id, reason) // Pass post ID and reason
-                            }
-
-
+                            icon1 = postActions.icon1,
+                            icon2 = postActions.icon2,
+                            onReport = postActions.onReport,
+                            onClear = postActions.onClear
                         )
                     }
                 } else {
@@ -237,6 +289,13 @@ fun pfpHash(pfp: String):Int
         else -> return R.drawable.a // Default value if not matched
     }
 }
+data class PostActions(
+    val icon1: String,
+    val icon2: String,
+    val onReport: (String) -> Unit,
+    val onClear: () -> Unit
+)
+
 
 
 

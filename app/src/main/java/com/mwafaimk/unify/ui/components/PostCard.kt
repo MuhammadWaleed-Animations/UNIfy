@@ -48,8 +48,11 @@ import com.mwafaimk.unify.data.model.post.PostDetails
 @Composable
 fun PostCard(
     postData: PostDetails,
+    icon1:String = "🚩",
+    icon2:String = "\uD83D\uDD17",
     onReport: (String) -> Unit = {}, // Takes the report reason
-    onProfileClick: () -> Unit = {}
+    onClear:() -> Unit = {},
+    onProfileClick: () -> Unit = {},
 ) {
     var showReportDialog by remember { mutableStateOf(false) }
     var reportReason by remember { mutableStateOf("") }
@@ -80,25 +83,49 @@ fun PostCard(
 
             // Flag button at the top-right
             TextButton(
-                onClick = { showReportDialog = true },
+                onClick = {
+                    if (icon1 == "🚫") {
+                    onReport("") // Call the function directly without showing a dialog
+                } else {
+                    showReportDialog = true // Show dialog for other icons (e.g., "🚩")
+                } },
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .padding(8.dp)
             ) {
                 Text(
-                    text = "🚩",
+                    text = icon1,
                     fontSize = 20.sp,
                     color = MaterialTheme.colorScheme.primary
                 )
             }
 
-            // Link button at the bottom-right
-            LinkButton(
-                linkToCopy = postData.contactInfo ?: "I am Batman",
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(8.dp)
-            )
+            if(icon2 == "\uD83D\uDD17") {
+                // Link button at the bottom-right
+                LinkButton(
+                    linkToCopy = postData.contactInfo ?: "I am Batman",
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(8.dp)
+                )
+            }
+            else if(icon2 == "✅")
+            {
+                TextButton(
+                    onClick = {
+                        onClear()
+                    },
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(8.dp) // Modifier passed from the caller
+                ) {
+                    Text(
+                        text = "✅",
+                        fontSize = 16.sp,
+                        color = Color.Red // Sets the icon/text color
+                    )
+                }
+            }
         }
 
         // Report Dialog
