@@ -47,7 +47,17 @@ fun AppNavigation() {
                 EditPostScreen(onNavigate = navController::navigate, postContent = postDetails)
             }
         }
-        composable(NavRoutes.UserProfile)   { UserPageScreen(onNavigate = navController::navigate)}
+        //composable(NavRoutes.UserProfile)   { UserPageScreen(onNavigate = navController::navigate)}
+        composable(
+            route = "userProfile/{userId}",
+            arguments = listOf(
+                navArgument("userId") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId") ?: "unknown"
+            UserPageScreen(onNavigate = navController::navigate, userId = userId)
+        }
+
         composable(NavRoutes.EditProfile)   { EditProfileScreen(onNavigate = navController::navigate) }
     }
 }

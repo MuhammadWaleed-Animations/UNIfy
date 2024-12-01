@@ -141,7 +141,10 @@ fun HomePage(onNavigate: (String) -> Unit , viewModel: HomePageViewModel = hiltV
                     modifier = Modifier
                         .size(48.dp)
                         .clip(CircleShape)
-                        .clickable { onNavigate(NavRoutes.UserProfile) }
+                        .clickable {
+                            onNavigate("${NavRoutes.UserProfile}/${userState?.user?._id ?: "error in userstate userid profile Screen"}")
+                            //onNavigate(NavRoutes.UserProfile)
+                            }
                 )
 
 
@@ -285,7 +288,13 @@ fun HomePage(onNavigate: (String) -> Unit , viewModel: HomePageViewModel = hiltV
                             icon1 = postActions.icon1,
                             icon2 = postActions.icon2,
                             onReport = postActions.onReport,
-                            onClear = postActions.onClear
+                            onClear = postActions.onClear,
+                            onToggle = postActions.onToggle,
+                            onProfileClick = {
+                                Log.d("userprofile: ","inside onProfile")
+                                onNavigate("${NavRoutes.UserProfile}/${post?.userId?._id ?: "error in userstate userid profile Screen"}")
+
+                            }
                         )
                     }
                 } else {
@@ -340,6 +349,7 @@ data class PostActions(
     val onReport: (String) -> Unit,
     val onClear: () -> Unit,
     val onToggle:()->Unit,
+
 
 )
 
