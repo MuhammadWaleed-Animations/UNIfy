@@ -211,6 +211,26 @@ fun UserPageScreen(onNavigate: (String) -> Unit,userId:String , viewModel:UserPr
                     .align(Alignment.TopCenter),
 
                 )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .align(Alignment.BottomCenter),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Button(
+                    onClick = { onNavigate(NavRoutes.Home) },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Yellow),
+                    modifier = Modifier.fillMaxWidth(0.8f)
+                ) {
+                    Text(
+                        text = "Home Screen",
+                        color = Color.Black,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
         }
 
     }

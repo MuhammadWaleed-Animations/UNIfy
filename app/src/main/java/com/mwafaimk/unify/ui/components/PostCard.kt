@@ -89,9 +89,12 @@ fun PostCard(
                 onClick = {
                     if (icon1 == "🚫") {
                     onReport("") // Call the function directly without showing a dialog
-                } else {
-                    showReportDialog = true // Show dialog for other icons (e.g., "🚩")
-                } },
+                    } else if (icon1 ==  "🗑️") {
+
+                    } else{
+                            showReportDialog = true // Show dialog for other icons (e.g., "🚩")
+                        }
+                    },
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .padding(8.dp)

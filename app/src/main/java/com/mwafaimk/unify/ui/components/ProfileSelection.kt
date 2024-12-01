@@ -26,7 +26,10 @@ import com.mwafaimk.unify.data.model.post.PostDetails
 
 @Composable
 fun ProfileSection(postData: PostDetails, onProfileClick: () -> Unit = {}) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    Row(verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+            .clickable(onClick = onProfileClick) // Trigger the function on click
+    ) {
         Image(
             painter = painterResource(id = com.mwafaimk.unify.ui.pages.editProfile.pfpHash(postData?.userId?.profilePicture?:"Default")),
             contentDescription = "Profile Image",
