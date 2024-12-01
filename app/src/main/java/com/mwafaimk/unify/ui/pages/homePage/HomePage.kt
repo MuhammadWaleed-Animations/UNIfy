@@ -197,16 +197,20 @@ fun HomePage(onNavigate: (String) -> Unit , viewModel: HomePageViewModel = hiltV
                                             organization = userState?.user?.organization ?: "Error"
                                         )
                                     }
+                                },
+                                onToggle = {
+
                                 }
+
                             )
                         }
-                        else if(selectedCategory == "Own Posts") {
-                            // ♡ 💙 🗑️ 📝
+                        else if (selectedCategory == "Own Posts") {
                             PostActions(
-                                icon1 ="🗑️",
+                                icon1 = "🗑️",
                                 icon2 = "📝",
                                 onReport = { reason ->
-                                    viewModel.deletePost(post?._id?:"Error Post without id in delete post") // Clear report logic
+                                    viewModel.deletePost(post?._id ?: "Error Post without id in delete post")
+                                    Log.d("HomePage", "Post deleted: ${post?._id}")
                                     if (userState?.user != null) {
                                         viewModel.homeResponse(
                                             userId = userState?.user?._id ?: "Error",
@@ -218,17 +222,24 @@ fun HomePage(onNavigate: (String) -> Unit , viewModel: HomePageViewModel = hiltV
                                 onClear = {
                                     val postDetailsJson = Gson().toJson(post)
                                     onNavigate("${NavRoutes.EditPost}/$postDetailsJson")
-//                                    if (userState?.user != null) {
-//
-//                                        viewModel.homeResponse(
-//                                            userId = userState?.user?._id ?: "Error",
-//                                            category = selectedCategory,
-//                                            organization = userState?.user?.organization ?: "Error"
-//                                        )
-//                                    }
+                                },
+                                onToggle = {
+                                    Log.d("HomePage", "onToggle triggered for post: ${post?._id}")
+                                    viewModel.togglePostDone(
+                                        postId = post?._id ?: "Error Post without id in toggle post",
+                                        done = !(post!!.done)
+                                    )
+                                    if (userState?.user != null) {
+                                        viewModel.homeResponse(
+                                            userId = userState?.user?._id ?: "Error",
+                                            category = selectedCategory,
+                                            organization = userState?.user?.organization ?: "Error"
+                                        )
+                                    }
                                 }
                             )
                         }
+
                         else {
                             PostActions(
                                 icon1 = "🚩",
@@ -244,6 +255,9 @@ fun HomePage(onNavigate: (String) -> Unit , viewModel: HomePageViewModel = hiltV
                                     }
                                 },
                                 onClear = {
+                                },
+                                onToggle = {
+
                                 }
                             )
                         }
@@ -324,7 +338,9 @@ data class PostActions(
     val icon1: String,
     val icon2: String,
     val onReport: (String) -> Unit,
-    val onClear: () -> Unit
+    val onClear: () -> Unit,
+    val onToggle:()->Unit,
+
 )
 
 

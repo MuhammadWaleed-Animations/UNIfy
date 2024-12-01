@@ -118,6 +118,7 @@ class HomePageViewModel  @Inject constructor(
         viewModelScope.launch {
             try {
                 //_uiState.value = _uiState.value.copy(isLoading = true)
+                Log.d("togglePostDone", "Post ID: $postId, Done: $done")
                 val response = networkRepository.togglePostDone(postId, ToggleDoneRequest(done))
                 if (response.message == "Done toggled successfully") {
                     _toastMessage.value = "Done toggled successfully!"

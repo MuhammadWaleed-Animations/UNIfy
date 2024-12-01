@@ -1,4 +1,5 @@
 package com.mwafaimk.unify.ui.components
+import android.util.Log
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -106,6 +107,7 @@ fun PostCard(
                 Spacer(modifier = Modifier.height(8.dp))
                 TextButton(
                     onClick = {
+                        Log.d("idhar to a gya ","meowwwwwwwwwwww")
                         onToggle()
                     },
                     modifier = Modifier
