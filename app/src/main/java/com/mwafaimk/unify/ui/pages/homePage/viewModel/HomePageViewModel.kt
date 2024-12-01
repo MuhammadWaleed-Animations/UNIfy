@@ -5,9 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mwafaimk.unify.core.util.datastore.DataManager
+import com.mwafaimk.unify.data.model.admin.AdminDetails
 import com.mwafaimk.unify.data.model.post.PostDetails
 import com.mwafaimk.unify.data.model.post.UserIdDetails
 import com.mwafaimk.unify.data.model.post.updatePost.UpdatePostDetails
+import com.mwafaimk.unify.data.model.user.login.LoginRequest
 import com.mwafaimk.unify.data.model.user.login.LoginResponse
 import com.mwafaimk.unify.data.model.user.updateUser.UpdateUserRequest
 import com.mwafaimk.unify.data.model.user.updateUser.UpdateUserResponse
@@ -50,12 +52,36 @@ class HomePageViewModel  @Inject constructor(
         }
     }
 
+    private val _toastMessage = MutableStateFlow<String?>(null)
+    val toastMessage: StateFlow<String?> get() = _toastMessage
+
+    fun reportPost(postId: String, reason: String) {
+        viewModelScope.launch {
+            try {
+                _uiState.value = _uiState.value.copy(isLoading = true)
+                val response = networkRepository.reportPost(postId)
+                if (response.message == "Post reported successfully") {
+                    _toastMessage.value = "Post reported successfully!"
+                } else {
+                    _toastMessage.value = "Failed to report post."
+                }
+            } catch (e: Exception) {
+                _toastMessage.value = "An error occurred. Please try again."
+                Log.e("HomePageViewModel", "Error reporting post", e)
+            } finally {
+                _uiState.value = _uiState.value.copy(isLoading = false)
+            }
+        }
+    }
+
 
     fun homeResponse(
         userId:String,
         category: String,
         organization:String
     ) {
+        val currentUser = userState.value
+
         viewModelScope.launch {
             try {
                 Log.d("HomeViewModel", "inside Home Response with category: $category")
@@ -68,13 +94,16 @@ class HomePageViewModel  @Inject constructor(
                         Log.d("HomeViewModel", "Category matched: General")
                         response = networkRepository.getAllPosts(organization)
                         _responseLiveData.value = response
-                        Log.d("General posts", "Post List: ${response[0]}, ${response[1]}")
+                        Log.d("General posts", "Post List: ${response[0]}")
+                    }
+                    category.equals("Reported", ignoreCase = true) -> {
+                        response = networkRepository.getReportedPosts(AdminDetails( currentUser?.user?._id?:"admin id not found in home reported posts"))
+                        _responseLiveData.value = response
                     }
                     category.equals("Own Posts", ignoreCase = true) -> {
                         Log.d("HomeViewModel", "Category matched: Own")
 
                         // Get the user data from userState
-                        val currentUser = userState.value
 
                         if (currentUser != null) {
                             val userResponse = networkRepository.getUserPosts(userId)
@@ -110,9 +139,8 @@ class HomePageViewModel  @Inject constructor(
                     }
                     else -> {
                         Log.d("HomeViewModel", "Category matched: Other (else)")
-                        response = networkRepository.getPostsByCategory("Environment", organization)
+                        response = networkRepository.getPostsByCategory(category, organization)
                         _responseLiveData.value = response
-                        Log.d("Category posts", "Post List: ${response[0]}")
                     }
                 }
             } catch (e: Exception) {
@@ -129,10 +157,14 @@ class HomePageViewModel  @Inject constructor(
     {
         _uiState.value = _uiState.value.copy(HomeError =  null)
     }
+    fun clearToastMessage() {
+        _toastMessage.value = null
+    }
+
 }
 
 data class HomeState(
     val HomeSuccess: Boolean = false,
     val HomeError: String? = null,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
 )

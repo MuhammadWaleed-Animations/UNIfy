@@ -55,6 +55,11 @@ fun AddPostScreen(onNavigate: (String) -> Unit, viewModel: AddPostViewModel = hi
     //ui state
     val uiState by viewModel.uiState.collectAsState()
 
+    val categories = listOf(
+            "General", "Sports", "Study", "Music", "Lost and Found", "Event Notification",
+            "Chill", "Fries", "Movie/Anime"
+        ) // Full list for regular users
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -71,7 +76,8 @@ fun AddPostScreen(onNavigate: (String) -> Unit, viewModel: AddPostViewModel = hi
             modifier = Modifier.padding(top=8.dp,bottom = 0.dp))
         CategoryDropdown(
             selectedCategory = selectedCategory,
-            onCategorySelected = { selectedCategory = it }
+            onCategorySelected = { selectedCategory = it },
+            categories = categories
         )
         Text(text = "Title*",
             color = Color.Cyan,

@@ -23,10 +23,11 @@ import androidx.compose.ui.unit.dp
 fun CategoryDropdown(
     selectedCategory: String,
     onCategorySelected: (String) -> Unit, // Callback to update parent state
+    categories: List<String>,
     modifier: Modifier = Modifier // Add modifier parameter
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val categories = listOf("General", "Sports","Study", "Music", "Lost and Found","Event Notification","Chill","Fries","Movie/Anime","Own Posts")
+    //val categories = listOf("General", "Sports","Study", "Music", "Lost and Found","Event Notification","Chill","Fries","Movie/Anime","Own Posts")
 
     Box(
         modifier = modifier // Use the modifier passed from the parent

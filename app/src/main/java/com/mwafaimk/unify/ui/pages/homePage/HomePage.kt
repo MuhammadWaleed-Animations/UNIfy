@@ -1,6 +1,7 @@
 package com.mwafaimk.unify.ui.pages.homePage
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,6 +30,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mwafaimk.unify.data.model.post.PostDetails
@@ -44,10 +46,30 @@ fun HomePage(onNavigate: (String) -> Unit , viewModel: HomePageViewModel = hiltV
     val userState by viewModel.userState.collectAsState()
     val uiState by viewModel.uiState.collectAsState()
     val posts by viewModel.responseLiveData.collectAsState() // Collect the list of posts
-
+    val toastMessage by viewModel.toastMessage.collectAsState()
 
     var selectedCategory by remember { mutableStateOf("General") }
 
+
+    // Filter categories based on isAdmin
+    val categories = if (userState?.isAdmin == true) {
+        listOf("General","Reported","Own Posts") // Only "Reported" for admin
+    } else {
+        listOf(
+            "General", "Sports", "Study", "Music", "Lost and Found", "Event Notification",
+            "Chill", "Fries", "Movie/Anime", "Own Posts"
+        ) // Full list for regular users
+    }
+
+
+    // Show Toast when toastMessage changes
+    val context = LocalContext.current
+    LaunchedEffect(toastMessage) {
+        toastMessage?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            viewModel.clearToastMessage() // Clear the message after showing the toast
+        }
+    }
     // Call the API when "General" is selected
     LaunchedEffect(selectedCategory) {
         if(selectedCategory == "General")
@@ -99,6 +121,7 @@ fun HomePage(onNavigate: (String) -> Unit , viewModel: HomePageViewModel = hiltV
                 CategoryDropdown(
                     selectedCategory = selectedCategory,
                     onCategorySelected = { selectedCategory = it },
+                    categories = categories, // Pass filtered categories
                     modifier = Modifier.weight(1f) // Allow the dropdown to take available space
                 )
 
@@ -160,7 +183,11 @@ fun HomePage(onNavigate: (String) -> Unit , viewModel: HomePageViewModel = hiltV
                                 reported = post.reported,
                                 done = post.done,
                                 _id = post._id
-                            )
+                            ),
+                            onReport = { reason ->
+                                viewModel.reportPost(post._id, reason) // Pass post ID and reason
+                            }
+
 
                         )
                     }

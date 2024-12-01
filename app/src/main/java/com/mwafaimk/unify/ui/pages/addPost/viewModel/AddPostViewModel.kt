@@ -51,7 +51,7 @@ class AddPostViewModel @Inject constructor(
                 }
                 Log.d("SignIn","Response: "+response)
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(addPostError = "SignIn Failed! Check Internet Connection")
+                _uiState.value = _uiState.value.copy(addPostError = "Post not added! Check Internet Connection")
             }
             finally {
                 _uiState.value = _uiState.value.copy(isLoading = false)

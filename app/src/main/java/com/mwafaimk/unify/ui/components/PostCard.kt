@@ -37,26 +37,35 @@ import com.mwafaimk.unify.R
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mwafaimk.unify.data.model.post.PostDetails
 
 @Composable
-fun PostCard(postData: PostDetails ,onProfileClick: () -> Unit = {}) {
+fun PostCard(
+    postData: PostDetails,
+    onReport: (String) -> Unit = {}, // Takes the report reason
+    onProfileClick: () -> Unit = {}
+) {
+    var showReportDialog by remember { mutableStateOf(false) }
+    var reportReason by remember { mutableStateOf("") }
+
     Card(
         shape = RoundedCornerShape(16.dp),
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp) // Padding for the content
+                .padding(12.dp)
         ) {
             Column {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -71,9 +80,7 @@ fun PostCard(postData: PostDetails ,onProfileClick: () -> Unit = {}) {
 
             // Flag button at the top-right
             TextButton(
-                onClick = {
-                    // Handle flag click here
-                },
+                onClick = { showReportDialog = true },
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .padding(8.dp)
@@ -87,10 +94,46 @@ fun PostCard(postData: PostDetails ,onProfileClick: () -> Unit = {}) {
 
             // Link button at the bottom-right
             LinkButton(
-                linkToCopy = postData.contactInfo?: "I am Batman",
+                linkToCopy = postData.contactInfo ?: "I am Batman",
                 modifier = Modifier
-                    .align(Alignment.BottomEnd) // Correct alignment inside Box
+                    .align(Alignment.BottomEnd)
                     .padding(8.dp)
+            )
+        }
+
+        // Report Dialog
+        if (showReportDialog) {
+            AlertDialog(
+                onDismissRequest = { showReportDialog = false },
+                title = { Text("Report Post") },
+                text = {
+                    Column {
+                        Text("Enter the reason for reporting this post:")
+                        Spacer(modifier = Modifier.height(8.dp))
+                        TextField(
+                            value = reportReason,
+                            onValueChange = { reportReason = it },
+                            placeholder = { Text("Reason") }
+                        )
+                    }
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            if (reportReason.isNotBlank()) {
+                                onReport(reportReason) // Pass the reason to the ViewModel
+                                showReportDialog = false
+                            }
+                        }
+                    ) {
+                        Text("Confirm")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showReportDialog = false }) {
+                        Text("Cancel")
+                    }
+                }
             )
         }
     }

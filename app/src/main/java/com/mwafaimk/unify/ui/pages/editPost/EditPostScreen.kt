@@ -48,6 +48,12 @@ fun EditPostScreen(onNavigate: (String) -> Unit) {
     // Scroll state
     val scrollState = rememberScrollState()
 
+    val categories = listOf(
+        "General", "Sports", "Study", "Music", "Lost and Found", "Event Notification",
+        "Chill", "Fries", "Movie/Anime"
+    ) // Full list for regular users
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -64,7 +70,8 @@ fun EditPostScreen(onNavigate: (String) -> Unit) {
             modifier = Modifier.padding(top=8.dp,bottom = 0.dp))
         CategoryDropdown(
             selectedCategory = selectedCategory,
-            onCategorySelected = { selectedCategory = it }
+            onCategorySelected = { selectedCategory = it },
+            categories = categories
         )
         Text(text = "Title*",
             color = Color.Cyan,
