@@ -1,6 +1,7 @@
 package com.mwafaimk.unify.ui.pages.editPost
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,29 +23,49 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.mwafaimk.unify.core.navigation.NavRoutes
+import com.mwafaimk.unify.data.model.post.PostDetails
+import com.mwafaimk.unify.data.model.post.updatePost.UpdatePostRequest
 import com.mwafaimk.unify.ui.components.CategoryDropdown
 import com.mwafaimk.unify.ui.components.PageTitle
 import com.mwafaimk.unify.ui.components.PfpSelectionDialog
 import com.mwafaimk.unify.ui.components.PostButton
 import com.mwafaimk.unify.ui.components.TextInputField
+import com.mwafaimk.unify.ui.pages.editPost.viewModel.EditPostViewModel
 
 @Composable
-fun EditPostScreen(onNavigate: (String) -> Unit) {
+fun EditPostScreen(onNavigate: (String) -> Unit, postContent:PostDetails, viewModel:EditPostViewModel = hiltViewModel()) {
     // State variables for each TextInputField
-    var title by remember { mutableStateOf("") }
-    var description by remember { mutableStateOf("") }
-    var timeFrame by remember { mutableStateOf("") }
-    var location by remember { mutableStateOf("") }
-    var membersRequired by remember { mutableStateOf("") }
-    var contactNumber by remember { mutableStateOf("") }
+    var title by remember { mutableStateOf(postContent.title ?: "error no title") }
+    var description by remember { mutableStateOf(postContent.description?:"error no description") }
+    var timeFrame by remember { mutableStateOf(postContent.time?:"error no time") }
+    var location by remember { mutableStateOf(postContent.location?: "error no location") }
+    var membersRequired by remember { mutableStateOf(postContent.memberCount?:"error no member count")}
+    var contactNumber by remember { mutableStateOf(postContent.contactInfo?:"error no contact info") }
+
+    val toastMessage by viewModel.toastMessage.collectAsState()
+    val context = LocalContext.current
+    LaunchedEffect(toastMessage) {
+        toastMessage?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            viewModel.clearToastMessage() // Clear the message after showing the toast
+        }
+        if(toastMessage == "Post updated successfully!")
+        {
+            onNavigate(NavRoutes.Home)
+        }
+    }
+
 
 
     // State for selected category
-    var selectedCategory by remember { mutableStateOf("Select...") }
+    var selectedCategory by remember { mutableStateOf(postContent.category[0]?: "error no category") }
 
     // Determine button color based on Title and Description fields
-    val isFormValid = title.isNotBlank() && description.isNotBlank() && selectedCategory != "Select..."
+    val isFormValid = true//title.isNotBlank() && description.isNotBlank() && selectedCategory != postContent.category[0]
     val buttonColor = if (isFormValid) Color.Red else Color.Gray
 
     // Scroll state
@@ -53,6 +76,28 @@ fun EditPostScreen(onNavigate: (String) -> Unit) {
         "Chill", "Fries", "Movie/Anime"
     ) // Full list for regular users
 
+
+    // Handle form submission
+    fun handleUpdatePost() {
+        if (isFormValid) {
+            // Create UpdatePostRequest
+            val updatePostRequest = UpdatePostRequest(
+                title = title,
+                description = description,
+                contactInfo = contactNumber,
+                time = timeFrame,
+                memberCount = membersRequired,
+                category = listOf(selectedCategory),
+                location = location
+            )
+
+            // Call ViewModel's updatePost function
+            viewModel.updatePost(postId = postContent._id ?: "error", request = updatePostRequest)
+        } else {
+            // Handle form validation failure
+            Log.e("EditPostScreen", "Form is invalid")
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -131,7 +176,9 @@ fun EditPostScreen(onNavigate: (String) -> Unit) {
             contentAlignment = Alignment.Center
         ) {
             PostButton(
-                onClick = { /* Handle upload action */ },
+                onClick = { handleUpdatePost()
+
+                          },
                 buttonColor = buttonColor,
                 buttonText = "UPDATE"
             )

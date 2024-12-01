@@ -33,6 +33,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.gson.Gson
 import com.mwafaimk.unify.data.model.post.PostDetails
 import com.mwafaimk.unify.data.model.post.UserIdDetails
 import com.mwafaimk.unify.ui.components.AddPostButton
@@ -198,7 +199,37 @@ fun HomePage(onNavigate: (String) -> Unit , viewModel: HomePageViewModel = hiltV
                                     }
                                 }
                             )
-                        } else {
+                        }
+                        else if(selectedCategory == "Own Posts") {
+                            // ♡ 💙 🗑️ 📝
+                            PostActions(
+                                icon1 ="🗑️",
+                                icon2 = "📝",
+                                onReport = { reason ->
+                                    viewModel.deletePost(post?._id?:"Error Post without id in delete post") // Clear report logic
+                                    if (userState?.user != null) {
+                                        viewModel.homeResponse(
+                                            userId = userState?.user?._id ?: "Error",
+                                            category = selectedCategory,
+                                            organization = userState?.user?.organization ?: "Error"
+                                        )
+                                    }
+                                },
+                                onClear = {
+                                    val postDetailsJson = Gson().toJson(post)
+                                    onNavigate("${NavRoutes.EditPost}/$postDetailsJson")
+//                                    if (userState?.user != null) {
+//
+//                                        viewModel.homeResponse(
+//                                            userId = userState?.user?._id ?: "Error",
+//                                            category = selectedCategory,
+//                                            organization = userState?.user?.organization ?: "Error"
+//                                        )
+//                                    }
+                                }
+                            )
+                        }
+                        else {
                             PostActions(
                                 icon1 = "🚩",
                                 icon2 = "\uD83D\uDD17",

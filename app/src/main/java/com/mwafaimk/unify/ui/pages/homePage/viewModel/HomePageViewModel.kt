@@ -9,6 +9,7 @@ import com.mwafaimk.unify.data.model.admin.AdminDetails
 import com.mwafaimk.unify.data.model.blockedUser.BlockUserRequest
 import com.mwafaimk.unify.data.model.post.PostDetails
 import com.mwafaimk.unify.data.model.post.UserIdDetails
+import com.mwafaimk.unify.data.model.post.done.ToggleDoneRequest
 import com.mwafaimk.unify.data.model.post.updatePost.UpdatePostDetails
 import com.mwafaimk.unify.data.model.user.login.LoginRequest
 import com.mwafaimk.unify.data.model.user.login.LoginResponse
@@ -94,6 +95,44 @@ class HomePageViewModel  @Inject constructor(
         }
 
     }
+    fun deletePost(postId:String) {
+        viewModelScope.launch {
+            try {
+                _uiState.value = _uiState.value.copy(isLoading = true)
+                val response = networkRepository.deletePost(postId)
+                if (response.message == "Post deleted successfully") {
+                    _toastMessage.value = "Post deleted successfully!"
+                } else {
+                    _toastMessage.value = response.message
+                }
+            } catch (e: Exception) {
+                _toastMessage.value = "An error occurred. Please try again."
+                Log.e("HomePageViewModel", "Error deleting post", e)
+            } finally {
+                _uiState.value = _uiState.value.copy(isLoading = false)
+            }
+        }
+    }
+
+    fun togglePostDone(postId:String,done:Boolean) {
+        viewModelScope.launch {
+            try {
+                //_uiState.value = _uiState.value.copy(isLoading = true)
+                val response = networkRepository.togglePostDone(postId, ToggleDoneRequest(done))
+                if (response.message == "Done toggled successfully") {
+                    _toastMessage.value = "Done toggled successfully!"
+                } else {
+                    _toastMessage.value = response.message
+                }
+            } catch (e: Exception) {
+                _toastMessage.value = "An error occurred. Please try again."
+                Log.e("HomePageViewModel", "Error toggling done", e)
+            } finally {
+                //_uiState.value = _uiState.value.copy(isLoading = false)
+            }
+        }
+    }
+
     fun unReportPost(postId: String, adminId: String) {
         viewModelScope.launch {
             try {

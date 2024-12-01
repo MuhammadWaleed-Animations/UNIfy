@@ -1,10 +1,14 @@
 package com.mwafaimk.unify.core.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.google.gson.Gson
+import com.mwafaimk.unify.data.model.post.PostDetails
 import com.mwafaimk.unify.ui.pages.addPost.AddPostScreen
 import com.mwafaimk.unify.ui.pages.editPost.EditPostScreen
 import com.mwafaimk.unify.ui.pages.editProfile.EditProfileScreen
@@ -31,7 +35,18 @@ fun AppNavigation() {
         composable(NavRoutes.Loading)       { LoadingScreen(onNavigate = navController::navigate) }
         composable(NavRoutes.Welcome)       { WelcomeScreen(onNavigate = navController::navigate) }
         composable(NavRoutes.AddPost)       { AddPostScreen(onNavigate = navController::navigate) }
-        composable(NavRoutes.EditPost)      { EditPostScreen(onNavigate = navController::navigate) }
+        composable(
+            route = "${NavRoutes.EditPost}/{postDetails}",
+            arguments = listOf(
+                navArgument("postDetails") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val postDetailsJson = backStackEntry.arguments?.getString("postDetails")
+            if (postDetailsJson != null) {
+                val postDetails = Gson().fromJson(postDetailsJson, PostDetails::class.java)
+                EditPostScreen(onNavigate = navController::navigate, postContent = postDetails)
+            }
+        }
         composable(NavRoutes.UserProfile)   { UserPageScreen(onNavigate = navController::navigate)}
         composable(NavRoutes.EditProfile)   { EditProfileScreen(onNavigate = navController::navigate) }
     }

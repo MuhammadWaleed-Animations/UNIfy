@@ -52,6 +52,7 @@ fun PostCard(
     icon2:String = "\uD83D\uDD17",
     onReport: (String) -> Unit = {}, // Takes the report reason
     onClear:() -> Unit = {},
+    onToggle:()->Unit = {},
     onProfileClick: () -> Unit = {},
 ) {
     var showReportDialog by remember { mutableStateOf(false) }
@@ -80,6 +81,7 @@ fun PostCard(
                 Spacer(modifier = Modifier.height(8.dp))
                 AdditionalInfo(postData)
             }
+            //♡ 💙
 
             // Flag button at the top-right
             TextButton(
@@ -99,7 +101,25 @@ fun PostCard(
                     color = MaterialTheme.colorScheme.primary
                 )
             }
-
+            if(icon2 == "📝")
+            {
+                Spacer(modifier = Modifier.height(8.dp))
+                TextButton(
+                    onClick = {
+                        onToggle()
+                    },
+                    modifier = Modifier
+                        .align(Alignment.CenterEnd)
+                        .padding(8.dp) // Modifier passed from the caller
+                ) {
+                    Text(
+                        text = if(!postData.done)"♡" else "💙" ,
+                        fontSize = 16.sp,
+                        color = Color.Red // Sets the icon/text color
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+            }
             if(icon2 == "\uD83D\uDD17") {
                 // Link button at the bottom-right
                 LinkButton(
@@ -109,7 +129,7 @@ fun PostCard(
                         .padding(8.dp)
                 )
             }
-            else if(icon2 == "✅")
+            else
             {
                 TextButton(
                     onClick = {
@@ -120,7 +140,7 @@ fun PostCard(
                         .padding(8.dp) // Modifier passed from the caller
                 ) {
                     Text(
-                        text = "✅",
+                        text = icon2,
                         fontSize = 16.sp,
                         color = Color.Red // Sets the icon/text color
                     )
