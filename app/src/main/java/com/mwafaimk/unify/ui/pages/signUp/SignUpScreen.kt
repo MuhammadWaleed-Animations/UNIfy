@@ -218,13 +218,13 @@ fun SignUpScreen(onNavigate: (String) -> Unit , viewModel: SignUpViewModel = hil
                     .align(Alignment.Start)
             )
             Spacer(modifier = Modifier.height(20.dp))
-            ProfilePlaceholder()
+            ProfilePlaceholder(pfp = selectedPfp)
             Spacer(modifier = Modifier.height(24.dp))
             Button(
                 onClick = { showDialog = true },
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
             ) {
-                Text("Select from Gallery", color = Color.Cyan)
+                Text("Select Profile Picture", color = Color.Cyan)
             }
             Spacer(modifier = Modifier.height(16.dp))
             //Spacer(modifier = Modifier.height(30.dp))
