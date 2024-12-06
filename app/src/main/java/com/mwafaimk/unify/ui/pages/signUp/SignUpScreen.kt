@@ -258,7 +258,7 @@ fun SignUpScreen(onNavigate: (String) -> Unit , viewModel: SignUpViewModel = hil
                         0 -> viewModel.checkEmail(email) // Check email at step 0
                         1 -> viewModel.checkUsername(identity) // Check username at step 1
                         2 -> i++
-                        3 -> viewModel.signUp(email,identity,password,phoneNumber,selectedPfp,organization)
+                        3 -> viewModel.signUp(email = email, username = identity, password = password, contactInfo = phoneNumber,pfp =  selectedPfp, organization = organization)
                     }
 
                     Log.d("ui state ",""+uiState)

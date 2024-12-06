@@ -98,7 +98,7 @@ class SignUpViewModel @Inject constructor(
                 val response = repository.createUser(CreateUserRequest(username,email,password,contactInfo,pfp,organization))
                 if (response.message == "User created successfully") {
                     _uiState.value = _uiState.value.copy(signUpError = "", signUpSuccess = true)
-                    saveUser(LoginResponse(User(response.userId,username,email,password,contactInfo,pfp,organization),false))
+                    saveUser(LoginResponse(User(_id = response.userId,username = username,email = email,password = password,contactInfo = contactInfo, profilePicture = pfp, organization = organization),false))
                     setLoginState(true)
                 } else {
                     _uiState.value = _uiState.value.copy(signUpError = response.message)
