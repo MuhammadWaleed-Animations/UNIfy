@@ -49,13 +49,22 @@ class SignInViewModel @Inject constructor(
                     _uiState.value = _uiState.value.copy(signInError = null, signInSuccess = true)
                     saveUser(response)
                     setLoginState(true)
-
-                } else {
-                    _uiState.value = _uiState.value.copy(signInError = response.message)
                 }
+                _uiState.value = _uiState.value.copy(signInError = response.message)
+
                 Log.d("SignIn","Response: "+response)
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(signInError = "SignIn Failed! Check Internet Connection")
+                val errorMessage = if (e is retrofit2.HttpException) {
+                    when (val responseCode = e.code()) { // Extract the HTTP status code
+                        404 -> "User not found" // Matches the controller's 404 response for missing user
+                        403 -> "User is blocked" // Matches the controller's 403 response for blocked user
+                        401 -> "Invalid credentials" // Matches the controller's 401 response for incorrect password
+                        else -> "SignIn Failed! HTTP Error $responseCode: ${e.message()}"
+                    }
+                } else {
+                    "SignIn Failed! Check Internet Connection"
+                }
+                _uiState.value = _uiState.value.copy(signInError = errorMessage)
             }
             finally {
                 _uiState.value = _uiState.value.copy(isLoading = false)

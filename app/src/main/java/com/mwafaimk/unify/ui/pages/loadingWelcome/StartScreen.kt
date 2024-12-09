@@ -61,7 +61,7 @@ fun StartScreen(onNavigate: (String) -> Unit) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "Sign in with Uni Email",
+                    text = "Log in with Uni Email",
                     color = Color.Black,
                     fontSize = 16.sp
                 )

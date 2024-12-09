@@ -76,17 +76,31 @@ fun EditProfileScreen(onNavigate: (String) -> Unit, viewModel: EditProfileViewMo
 
     val context = LocalContext.current
 
-    LaunchedEffect(uiState) {
-        Log.d("uiState",""+uiState)
+//    LaunchedEffect(uiState) {
+//        Log.d("uiState",""+uiState)
+//        if (uiState.EditError != null) {
+//            Toast.makeText(context, uiState.EditError, Toast.LENGTH_SHORT).show()
+//            viewModel.clearState()
+//        }
+//        if (uiState.EditSuccess) {
+//            viewModel.clearState()
+//            onNavigate("${NavRoutes.UserProfile}/${userState?.user?._id ?: "error in userstate userid profile Screen"}")
+//        }
+//    }
+
+    LaunchedEffect(uiState.EditError) {
         if (uiState.EditError != null) {
             Toast.makeText(context, uiState.EditError, Toast.LENGTH_SHORT).show()
-            viewModel.clearState()
         }
+        viewModel.clearState()
+    }
+    LaunchedEffect(uiState.EditSuccess) {
+        viewModel.clearState()
         if (uiState.EditSuccess) {
-            viewModel.clearState()
-            onNavigate(NavRoutes.UserProfile)
+            onNavigate("${NavRoutes.UserProfile}/${userState?.user?._id ?: "error in userstate userid profile Screen"}")
         }
     }
+
 
 
 
@@ -297,7 +311,22 @@ fun EditProfileScreen(onNavigate: (String) -> Unit, viewModel: EditProfileViewMo
                 CircularProgressIndicator()
             }
             Button(
-                onClick = { viewModel.updateUser(userState!!.user!!._id,globalUsername,userState!!.user!!.email, globalContactNo,pfp,userState!!.user!!.organization,userState!!.isAdmin) },
+                onClick = {
+                    if (userState!!.user!!.username != globalUsername || userState!!.user!!.email != globalContactNo || userState!!.user!!.profilePicture != pfp) {
+                        viewModel.updateUser(
+                            userState!!.user!!._id,
+                            globalUsername,
+                            userState!!.user!!.email,
+                            globalContactNo,
+                            pfp,
+                            userState!!.user!!.organization,
+                            userState!!.isAdmin
+                        )
+                    }
+                    else{
+                        onNavigate("${NavRoutes.UserProfile}/${userState?.user?._id ?: "error in userstate userid profile Screen"}")
+                    }
+                          },
                 modifier = Modifier.fillMaxWidth(0.5f) // Optional: Makes button width 50% of the parent
             ) {
                 Text(text = "save changes", color = Color.White)

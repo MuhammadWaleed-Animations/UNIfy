@@ -224,6 +224,7 @@ fun HomePage(onNavigate: (String) -> Unit , viewModel: HomePageViewModel = hiltV
                                 },
                                 onClear = {
                                     val postDetailsJson = Gson().toJson(post)
+                                    Log.d("onClear", "PostDetailsJson: $postDetailsJson")
                                     onNavigate("${NavRoutes.EditPost}/$postDetailsJson")
                                 },
                                 onToggle = {
