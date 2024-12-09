@@ -87,8 +87,17 @@ class EditProfileViewModel @Inject constructor(
                 }
                 Log.d("SignIn","Response: "+response)
             } catch (e: Exception) {
+                val errorMessage = if (e is retrofit2.HttpException) {
+                    when (val responseCode = e.code()) { // Extract the HTTP status code
+                        404 -> "User not found" // Matches the controller's 404 response for missing user
+                        400 -> "Username is already taken by another user"
+                        else -> "Edit Failed! HTTP Error $responseCode: ${e.message()}"
+                    }
+                } else {
+                    "Edit Profile Failed! Check Internet Connection"
+                }
                 Log.e("EditProfileViewModel", "Error updating user", e)
-                _uiState.value = _uiState.value.copy(EditError = "Edit Failed! Check Internet Connection")
+                _uiState.value = _uiState.value.copy(EditError = errorMessage)
             }
             finally{
                 _uiState.value = _uiState.value.copy(isLoading = false)

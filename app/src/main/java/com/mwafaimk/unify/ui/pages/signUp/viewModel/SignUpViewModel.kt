@@ -105,7 +105,15 @@ class SignUpViewModel @Inject constructor(
                 }
                 Log.d("SignUp","Response: "+response)
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(signUpError = "SignUp Failed! Check Internet Connection")
+                val errorMessage = if (e is retrofit2.HttpException) {
+                    when (val responseCode = e.code()) { // Extract the HTTP status code
+                        400 -> "Username or email already in use" // Matches the controller's 404 response for missing user
+                        else -> "SignUp Failed! HTTP Error $responseCode: ${e.message()}"
+                    }
+                } else {
+                    "SignUp Failed! Check Internet Connection"
+                }
+                _uiState.value = _uiState.value.copy(signUpError = errorMessage)
             }
             finally {
                 _uiState.value = _uiState.value.copy(isLoading = false)

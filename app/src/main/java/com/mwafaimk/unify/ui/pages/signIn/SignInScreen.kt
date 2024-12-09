@@ -11,6 +11,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -29,6 +32,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mwafaimk.unify.core.navigation.NavRoutes
@@ -92,13 +97,15 @@ fun SignInScreen(onNavigate: (String) -> Unit , viewModel: SignInViewModel = hil
             value = email,
             onValueChange = { email = it },
             label = { Text("Enter Email", color = Color.Gray) },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState()),
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = Color.LightGray, // TextField background color
                 focusedLabelColor = Color.Cyan, // Label color when focused
                 unfocusedLabelColor = Color.Gray // Label color when unfocused
-            )
+            ) ,
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Email)
         )
+
 
         // Add space below the logo
         Spacer(modifier = Modifier.height(30.dp))
@@ -118,12 +125,14 @@ fun SignInScreen(onNavigate: (String) -> Unit , viewModel: SignInViewModel = hil
             value = password,
             onValueChange = {password = it },
             label = { Text("Enter Password", color = Color.Gray) },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState()),
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = Color.LightGray, // TextField background color
                 focusedLabelColor = Color.Cyan, // Label color when focused
                 unfocusedLabelColor = Color.Gray // Label color when unfocused
-            )
+            ) ,
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
+            visualTransformation = PasswordVisualTransformation() // Obscures the password text
         )
         Spacer(modifier = Modifier.height(30.dp))
         if (uiState.isLoading) {

@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -31,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mwafaimk.unify.core.navigation.NavRoutes
@@ -59,7 +62,7 @@ fun SignUpScreen(onNavigate: (String) -> Unit , viewModel: SignUpViewModel = hil
     val isButtonEnabled = when (i) {
         0 -> email.isNotBlank() && password.isNotBlank()
         1 -> identity.isNotBlank() // Step 1: Enable if identity is not blank
-        2 -> phoneNumber.isNotBlank() // Step 2: Enable if phone number is not blank
+        2 -> true//phoneNumber.isNotBlank() // Step 2: Enable if phone number is not blank
         3 -> selectedPfp.isNotBlank() // Step 3: Enable by default (you can add custom validation here if needed)
         else -> false
     }
@@ -124,12 +127,13 @@ fun SignUpScreen(onNavigate: (String) -> Unit , viewModel: SignUpViewModel = hil
                                 },
 
                 label = { Text("Enter Email", color = Color.Gray) },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState()),
                 colors = TextFieldDefaults.textFieldColors(
                     containerColor = Color.LightGray, // TextField background color
                     focusedLabelColor = Color.Cyan, // Label color when focused
                     unfocusedLabelColor = Color.Gray // Label color when unfocused
-                )
+                ) ,
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Email),
             )
 
             // Add space below the logo
@@ -150,12 +154,14 @@ fun SignUpScreen(onNavigate: (String) -> Unit , viewModel: SignUpViewModel = hil
                 value = password,
                 onValueChange = {password = it },
                 label = { Text("Enter Password", color = Color.Gray) },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState()),
                 colors = TextFieldDefaults.textFieldColors(
                     containerColor = Color.LightGray, // TextField background color
                     focusedLabelColor = Color.Cyan, // Label color when focused
                     unfocusedLabelColor = Color.Gray // Label color when unfocused
-                )
+                ) ,
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
+                visualTransformation = PasswordVisualTransformation() // Obscures the password text
             )
             Spacer(modifier = Modifier.height(30.dp))
             if (uiState.isLoading) {
@@ -176,12 +182,13 @@ fun SignUpScreen(onNavigate: (String) -> Unit , viewModel: SignUpViewModel = hil
                 value = identity,
                 onValueChange = { identity = it },
                 label = { Text("Enter Identity", color = Color.Gray) },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState()),
                 colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color.LightGray,
-                    focusedLabelColor = Color.Cyan,
-                    unfocusedLabelColor = Color.Gray
-                )
+                    containerColor = Color.LightGray, // TextField background color
+                    focusedLabelColor = Color.Cyan, // Label color when focused
+                    unfocusedLabelColor = Color.Gray // Label color when unfocused
+                ) ,
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
             )
             Spacer(modifier = Modifier.height(30.dp))
             if (uiState.isLoading) {
@@ -201,13 +208,13 @@ fun SignUpScreen(onNavigate: (String) -> Unit , viewModel: SignUpViewModel = hil
                 value = phoneNumber,
                 onValueChange = { phoneNumber = it },
                 label = { Text("Phone Number", color = Color.Gray) },
-                modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState()),
                 colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color.LightGray,
-                    focusedLabelColor = Color.Cyan,
-                    unfocusedLabelColor = Color.Cyan
-                )
+                    containerColor = Color.LightGray, // TextField background color
+                    focusedLabelColor = Color.Cyan, // Label color when focused
+                    unfocusedLabelColor = Color.Gray // Label color when unfocused
+                ) ,
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Phone),
             )
         } else if (i == 3) {
             Text(
@@ -257,7 +264,9 @@ fun SignUpScreen(onNavigate: (String) -> Unit , viewModel: SignUpViewModel = hil
                     when (i) {
                         0 -> viewModel.checkEmail(email) // Check email at step 0
                         1 -> viewModel.checkUsername(identity) // Check username at step 1
-                        2 -> i++
+                        2 -> {
+                            if(phoneNumber == "") phoneNumber = "Not Comfy"
+                            i++}
                         3 -> viewModel.signUp(email = email, username = identity, password = password, contactInfo = phoneNumber,pfp =  selectedPfp, organization = organization)
                     }
 

@@ -46,7 +46,7 @@ fun AddPostScreen(onNavigate: (String) -> Unit, viewModel: AddPostViewModel = hi
     var selectedCategory by remember { mutableStateOf("Select...") }
 
     // Determine button color based on Title and Description fields
-    val isFormValid = title.isNotBlank() &&timeFrame.isNotBlank() && contactNumber.isNotBlank() &&location.isNotBlank() && membersRequired.isNotBlank() && description.isNotBlank() && selectedCategory != "Select..."
+    val isFormValid = title.isNotBlank()  && description.isNotBlank() && selectedCategory != "Select..." //&&timeFrame.isNotBlank() && contactNumber.isNotBlank() &&location.isNotBlank() && membersRequired.isNotBlank()
     val buttonColor = if (isFormValid) Color.Red else Color.Gray
 
     // Scroll state
@@ -141,9 +141,9 @@ fun AddPostScreen(onNavigate: (String) -> Unit, viewModel: AddPostViewModel = hi
                     val postRequest = CreatePostRequest(
                         title = title,
                         description = description,
-                        contactInfo = contactNumber.ifBlank { null },
-                        time = timeFrame.ifBlank { null },
-                        memberCount = membersRequired.ifBlank { null },
+                        contactInfo = contactNumber.ifBlank { "I am Batman" },
+                        time = timeFrame.ifBlank { ":>" },
+                        memberCount = membersRequired.ifBlank { ":)" },
                         category = listOf(selectedCategory),
                         location = location.ifBlank { "N/A" },
                         userId = viewModel.userState.value?.user?._id ?: ""
