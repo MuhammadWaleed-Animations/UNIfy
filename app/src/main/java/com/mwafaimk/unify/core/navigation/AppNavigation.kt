@@ -35,18 +35,30 @@ fun AppNavigation() {
         composable(NavRoutes.Loading)       { LoadingScreen(onNavigate = navController::navigate) }
         composable(NavRoutes.Welcome)       { WelcomeScreen(onNavigate = navController::navigate) }
         composable(NavRoutes.AddPost)       { AddPostScreen(onNavigate = navController::navigate) }
+
         composable(
             route = "${NavRoutes.EditPost}/{postDetails}",
-            arguments = listOf(
-                navArgument("postDetails") { type = NavType.StringType }
-            )
+            arguments = listOf(navArgument("postDetails") { type = NavType.StringType })
         ) { backStackEntry ->
             val postDetailsJson = backStackEntry.arguments?.getString("postDetails")
-            if (postDetailsJson != null) {
+            if (!postDetailsJson.isNullOrEmpty()) {
                 val postDetails = Gson().fromJson(postDetailsJson, PostDetails::class.java)
                 EditPostScreen(onNavigate = navController::navigate, postContent = postDetails)
             }
         }
+
+//        composable(
+//            route = "${NavRoutes.EditPost}/{postDetails}",
+//            arguments = listOf(
+//                navArgument("postDetails") { type = NavType.StringType }
+//            )
+//        ) { backStackEntry ->
+//            val postDetailsJson = backStackEntry.arguments?.getString("postDetails")
+//            if (postDetailsJson != null) {
+//                val postDetails = Gson().fromJson(postDetailsJson, PostDetails::class.java)
+//                EditPostScreen(onNavigate = navController::navigate, postContent = postDetails)
+//            }
+//        }
         //composable(NavRoutes.UserProfile)   { UserPageScreen(onNavigate = navController::navigate)}
         composable(
             route = "userProfile/{userId}",

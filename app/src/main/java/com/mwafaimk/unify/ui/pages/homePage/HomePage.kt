@@ -1,5 +1,6 @@
 package com.mwafaimk.unify.ui.pages.homePage
 
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -224,9 +225,11 @@ fun HomePage(onNavigate: (String) -> Unit , viewModel: HomePageViewModel = hiltV
                                 },
                                 onClear = {
                                     val postDetailsJson = Gson().toJson(post)
+                                    val encodedPostDetails = Uri.encode(postDetailsJson)
                                     Log.d("onClear", "PostDetailsJson: $postDetailsJson")
-                                    onNavigate("${NavRoutes.EditPost}/$postDetailsJson")
-                                },
+                                    onNavigate("${NavRoutes.EditPost}/$encodedPostDetails")
+                                }
+                                ,
                                 onToggle = {
                                     Log.d("HomePage", "onToggle triggered for post: ${post?._id}")
                                     viewModel.togglePostDone(
